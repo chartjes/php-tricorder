@@ -5,6 +5,8 @@ PHP-Tricorder is a CLI utility that scans structure files created using [phpDocu
 and offers suggestions on potential problems with your code along with testing
 strategy information.
 
+Executing 'php tricorder.php' will give you some uage information.
+
 Please read the file LICENSE included with this code for licensing details.
 
 How To Use It
