@@ -16,7 +16,7 @@ if (count($argv) == 0 || $argv[0] == '--help') {
     echo "PHP-Tricoder analyzes phpDocumentor output to provide" . PHP_EOL;
     echo "suggestions on test scenarios and point out potential" . PHP_EOL;
     echo "problems" . PHP_EOL . PHP_EOL;
-    ECHO "Usage: tricoder.php </path/to/structure.xml>" . PHP_EOL . PHP_EOL;;
+    echo "Usage: php tricoder.php </path/to/structure.xml>" . PHP_EOL . PHP_EOL;;
     exit();
 }
 
