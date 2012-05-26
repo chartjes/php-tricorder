@@ -45,7 +45,7 @@ foreach ($files as $file) {
  */
 function scanClasses($classXml) {
     foreach ($classXml as $classInfo) {
-        echo "Scanning " . $classInfo->{'name'} . PHP_EOL;
+        echo "Scanning " . $classInfo->{'name'} . PHP_EOL . PHP_EOL;
         scanMethods($classInfo->method);
     }
 }
@@ -58,7 +58,10 @@ function scanClasses($classXml) {
  */
 function scanMethods($methods) {
     foreach ($methods as $method) {
-        isVisibile((string)$method->name, (string)$method['visibility']);
+        $methodHasSuggestions = isVisibile(
+            (string)$method->name,
+            (string)$method['visibility']
+        );
 
         // Check to see if we have any parameters that we need to test
         $paramTags = array_filter((array)$method->docblock->tag, function($tag) {
@@ -67,7 +70,14 @@ function scanMethods($methods) {
             }
         });
 
-        scanArguments((string)$method->name, $paramTags);
+        $argsHaveSuggestions = scanArguments(
+            (string)$method->name, 
+            $paramTags
+        );
+
+        echo ($methodHasSuggestions == false && $argsHaveSuggestions == false) 
+            ? '' 
+            : PHP_EOL;
     }
 }
 
@@ -78,10 +88,15 @@ function scanMethods($methods) {
  * @param string $visibility
  */
 function isVisibile($methodName, $visibility) {
+    $methodIsVisible = false;
+
     // If a method is protected, flag it as hard-to-test
     if ($visibility !== 'public') {
+        $methodIsVisible = true;
         echo "{$methodName} -- non-public methods are difficult to test in isolation" . PHP_EOL;
     }
+
+    return $methodIsVisible;
 }
 
 /**
@@ -90,11 +105,16 @@ function isVisibile($methodName, $visibility) {
  *
  * @param string $methodName
  * @param array $tags
+ * @return boolean
  */
 function scanArguments($methodName, $tags) {
+    $argumentsHaveSuggestions = array();
+
     foreach ($tags as $tag) {
-        processArgumentType($methodName, $tag);
+        $argumentsHaveSuggestions[] = processArgumentType($methodName, $tag);
     }
+
+    return in_array(true, $argumentsHaveSuggestions);
 }
 
 /**
@@ -102,6 +122,7 @@ function scanArguments($methodName, $tags) {
  *
  * @param string $methodName
  * @param array $tag
+ * @return boolean
  */
 function processArgumentType($methodName, $tag) {
     $acceptedTypes = array(
@@ -115,6 +136,9 @@ function processArgumentType($methodName, $tag) {
             . " as " 
             . $tag['type'] 
             . PHP_EOL;
+        return true;
     }
+
+    return false;
 }
 
