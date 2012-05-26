@@ -52,5 +52,5 @@ your classes. Here's some sample output:
 	_update -- make sure to mock $franchise as \IBL\Franchise
   
 
-Feel free to hit me up on [Twitter](https://twitter/com/grmpyprogrammer) and pull requests
+Feel free to hit me up on [Twitter](https://twitter.com/grmpyprogrammer) and pull requests
 to make the tool better are always welcome. 
