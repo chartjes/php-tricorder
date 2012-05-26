@@ -63,8 +63,11 @@ function scanMethods($methods) {
             (string)$method['visibility']
         );
 
+        // Convert our tag information into an array for easy manipulation
+        $methodTags = json_decode(json_encode((array)$method->docblock->tag), 1);
+
         // Check to see if we have any parameters that we need to test
-        $paramTags = array_filter((array)$method->docblock->tag, function($tag) {
+        $paramTags = array_filter($methodTags, function($tag) {
             if (isset($tag['name']) && $tag['name'] == 'param') {
                 return true;
             }
@@ -75,9 +78,25 @@ function scanMethods($methods) {
             $paramTags
         );
 
-        echo ($methodHasSuggestions == false && $argsHaveSuggestions == false) 
+        // Grab our method return information 
+        $returnTag = array_filter($methodTags, function($tag) {
+            if (isset($tag['name']) &&$tag['name'] == 'return') {
+                return true;
+            }
+        });
+        
+        $returnTypeHasSuggestions = processReturnType(
+            (string)$method->name,
+            $returnTag
+        );
+
+        echo ($methodHasSuggestions == false 
+            && $argsHaveSuggestions == false
+            && $returnTypeHasSuggestions)
             ? '' 
             : PHP_EOL;
+
+
     }
 }
 
@@ -130,15 +149,98 @@ function processArgumentType($methodName, $tag) {
         'string', 
         'integer'
     );
-    if (!in_array($tag['type'], $acceptedTypes)) {
-        echo "{$methodName} -- make sure to mock "
-            . $tag['variable'] 
-            . " as " 
-            . $tag['type'] 
-            . PHP_EOL;
-        return true;
+    $argHasSuggestions = false;
+    $varName = $tag['variable'];
+    $tagType = $tag['type'];
+
+    /**
+     * Sometimes people send us param types like bool|string, so we need to
+     * search for those and convert them to 'mixed'
+     */
+    if (stristr('|', $tagType) === true) {
+        $tagType = 'mixed';
+    }
+    
+    switch ($tagType) {
+        case 'array':
+            $msg = "make sure to test {$varName} using an empty array()";
+            $argHasSuggestions = true;
+            break;
+        case 'bool':
+        case 'boolean':
+            $msg = "make sure to test {$varName} using both true and false";
+            $argHasSuggestions = true;
+            break;
+        case 'int':
+        case 'integer':
+            $msg = "make sure to test {$varName} using non-integer values";
+            $argHasSuggestions = true;
+            break;
+        case 'mixed': 
+            $msg = "make sure to test {$varName} using all potential values";
+            $argHasSuggestions = true;
+            break;
+        case 'string':
+            $msg = "make sure to test {$varName} using null or empty strings"; 
+            $argHasSuggestions = true;
+            break;
+        case 'object':
+        default:
+            $msg = "make sure to mock {$varName} as {$tagType}";
+            $argHasSuggestions = true;
+            break;
+    } 
+
+    echo "{$methodName} -- {$msg}" . PHP_EOL;
+
+    return $argHasSuggestions;
+}
+
+/**
+ * Look at the return type and react accordingly
+ *
+ * @param string $methodName
+ * @param array $tag
+ * @return boolean
+ */
+function processReturnType($methodName, $tag) {
+    // Flatten the array a bit so we can check for attributes
+    $tagInfo = array_shift($tag);
+    
+    if ($tagInfo == NULL) {
+        return false;
     }
 
-    return false;
+    $tagType = $tagInfo['type'];
+    
+    /**
+     * Sometimes people send us return types like bool|string, so we need to
+     * search for those and convert them to 'mixed'
+     */
+    if (stristr('|', $tagType) === true) {
+        $tagType = 'mixed';
+    }
+    
+    switch ($tagType) {
+        case 'mixed':
+            $msg = "make sure to test method returns all potential values";
+            break;
+        case 'bool':
+        case 'boolean':
+            $msg = "make sure to test method returns boolean values";
+            break;
+        case 'int':
+        case 'integer':
+            $msg = "make sure to test method returns non-integer values";
+            break;
+        case 'string':
+            $msg = "make sure to test method returns expected string values"; 
+            break;
+        default:
+            $msg = "make sure to test method returns {$tagType} instances";
+            break;
+    } 
+
+    echo "{$methodName} -- {$msg}" . PHP_EOL;
 }
 
