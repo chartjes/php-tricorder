@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  * PHP-Tricorder
@@ -92,11 +91,9 @@ function scanMethods($methods) {
 
         echo ($methodHasSuggestions == false 
             && $argsHaveSuggestions == false
-            && $returnTypeHasSuggestions)
+            && $returnTypeHasSuggestions == false)
             ? '' 
             : PHP_EOL;
-
-
     }
 }
 
