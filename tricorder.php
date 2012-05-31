@@ -29,8 +29,21 @@ if (!file_exists($structureFile)) {
 
 // Load in our structure and start iterating through it
 echo "Reading in phpDocumentor structure file..." . PHP_EOL . PHP_EOL;
-$structureData = simplexml_load_file($structureFile);
+
+// I hate suppressing error messages, but we are trapping the results later
+$structureData = @simplexml_load_file($structureFile);
+
+if (!$structureData) {
+    echo "{$structureFile} is not a properly formatted phpDocumentor structure";
+    echo " file, please verify it's contents" . PHP_EOL;
+    exit();
+}
+        
 $files = $structureData->{'file'};
+
+if (!$files) {
+    echo "Could not find proper file information in {$structureFile}" . PHP_EOL;
+}
 
 foreach ($files as $file) {
     echo $file['path'] . PHP_EOL . PHP_EOL;
