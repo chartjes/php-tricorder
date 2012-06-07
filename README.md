@@ -1,5 +1,4 @@
-php-tricorder
-=============
+[![PHP-Tricorder logo](http://grumpy-testing.com/Tricorder_text.png)]
 
 PHP-Tricorder is a CLI utility that scans structure files created using [phpDocumentor](http://phpdoc.org)
 and offers suggestions on potential problems with your code along with testing
