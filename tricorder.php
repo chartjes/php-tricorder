@@ -48,6 +48,44 @@ if (!$files) {
 foreach ($files as $file) {
     echo $file['path'] . PHP_EOL . PHP_EOL;
     scanClasses($file->class);
+    dependencyCheck($file['path']);
+    echo "\n";
+}
+
+/**
+ * Read in our file, analyze the tokens and look for classes that might be
+ * dependencies that need to be injected
+ */
+function dependencyCheck($pathToFile) {
+    $tokens = token_get_all(file_get_contents($pathToFile));
+    $dependencyFlag = false;
+    $depCount = 1;
+    $dependencyName = '';
+
+    foreach ($tokens as $idx => $token) {
+        if ($dependencyFlag === true) {
+            // If we encounter a opening (, then we know we have found
+            // our dependency
+            if (!is_string($token)) {
+                $dependencyName .= $token[1];
+            } else {
+                $dependencyFlag = false;
+                $dependencyName = trim($dependencyName);
+                echo "{$dependencyName} might need to be injected for testing purposes\n";
+            }
+        }
+
+        if (is_long($token[0]) && token_name($token[0]) == 'T_NEW') {
+            $dependencyFlag = true;
+            $dependencyName = '';
+        }
+    }
+
+    // Grab the tokens
+    // Iterate through each token
+    // if we previously found T_NEW, grab name of class
+    // display name of class as potential dependency to inject
+    // else when we discover a T_NEW, flag it
 }
 
 /**
@@ -173,30 +211,30 @@ function processArgumentType($methodName, $tag) {
     
     switch ($tagType) {
         case 'array':
-            $msg = "make sure to test {$varName} using an empty array()";
+            $msg = "test {$varName} using an empty array()";
             $argHasSuggestions = true;
             break;
         case 'bool':
         case 'boolean':
-            $msg = "make sure to test {$varName} using both true and false";
+            $msg = "test {$varName} using both true and false";
             $argHasSuggestions = true;
             break;
         case 'int':
         case 'integer':
-            $msg = "make sure to test {$varName} using non-integer values";
+            $msg = "test {$varName} using non-integer values";
             $argHasSuggestions = true;
             break;
         case 'mixed': 
-            $msg = "make sure to test {$varName} using all potential values";
+            $msg = "test {$varName} using all potential values";
             $argHasSuggestions = true;
             break;
         case 'string':
-            $msg = "make sure to test {$varName} using null or empty strings"; 
+            $msg = "test {$varName} using null or empty strings"; 
             $argHasSuggestions = true;
             break;
         case 'object':
         default:
-            $msg = "make sure to mock {$varName} as {$tagType}";
+            $msg = "mock {$varName} as {$tagType}";
             $argHasSuggestions = true;
             break;
     } 
@@ -233,21 +271,21 @@ function processReturnType($methodName, $tag) {
     
     switch ($tagType) {
         case 'mixed':
-            $msg = "make sure to test method returns all potential values";
+            $msg = "test method returns all potential values";
             break;
         case 'bool':
         case 'boolean':
-            $msg = "make sure to test method returns boolean values";
+            $msg = "test method returns boolean values";
             break;
         case 'int':
         case 'integer':
-            $msg = "make sure to test method returns non-integer values";
+            $msg = "test method returns non-integer values";
             break;
         case 'string':
-            $msg = "make sure to test method returns expected string values"; 
+            $msg = "test method returns expected string values"; 
             break;
         default:
-            $msg = "make sure to test method returns {$tagType} instances";
+            $msg = "test method returns {$tagType} instances";
             break;
     } 
 
