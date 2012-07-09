@@ -29,30 +29,38 @@ your classes. Here's some sample output:
 
 	Scanning FranchiseMapper
 
-	__construct -- make sure to mock $conn as \PDO
+	__construct -- mock $conn as \PDO
 
-	createFranchiseFromRow -- make sure to test $row using an empty array()
+	createFranchiseFromRow -- test $row using an empty array()
 
-	delete -- make sure to mock $franchise as \IBL\Franchise
+	delete -- mock $franchise as \IBL\Franchise
 
-	findAll -- make sure to test method returns \IBL\Franchise instances
-	findByConference -- make sure to test $conference using null or empty strings
+	findAll -- test method returns \IBL\Franchise instances
+	findByConference -- test $conference using null or empty strings
 
-	findByConferenceDivision -- make sure to test $conference using null or empty strings
+	findByConferenceDivision -- test $conference using null or empty strings
 
-	findByNickname -- make sure to test $nickname using null or empty strings
+	findByNickname -- test $nickname using null or empty strings
 
-	findById -- make sure to test $id using non-integer values
+	findById -- test $id using non-integer values
 
-	generateMap -- make sure to test $teamsTable using null or empty strings
+	generateMap -- test $teamsTable using null or empty strings
 
-	save -- make sure to mock $franchise as \IBL\Franchise
+	save -- mock $franchise as \IBL\Franchise
 
 	_insert -- non-public methods are difficult to test in isolation
-	_insert -- make sure to mock $franchise as \IBL\Franchise
+	_insert -- mock $franchise as \IBL\Franchise
 
 	_update -- non-public methods are difficult to test in isolation
-	_update -- make sure to mock $franchise as \IBL\Franchise
+	_update -- mock $franchise as \IBL\Franchise
+
+	\IBL\Franchise might need to be injected for testing purposes
+	\Exception might need to be injected for testing purposes
+	\Exception might need to be injected for testing purposes
+	\Exception might need to be injected for testing purposes
+	\Exception might need to be injected for testing purposes
+	\Exception might need to be injected for testing purposes
+
   
 
 Feel free to hit me up on [Twitter](https://twitter.com/grmpyprogrammer) and pull requests
