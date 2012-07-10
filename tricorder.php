@@ -75,9 +75,17 @@ function dependencyCheck($pathToFile) {
             }
         }
 
-        if (is_long($token[0]) && token_name($token[0]) == 'T_NEW') {
+        if (is_long($token[0]) && $token[0] == T_NEW) {
             $dependencyFlag = true;
             $dependencyName = '';
+        } elseif (is_long($token[0]) && $token[0] == T_DOUBLE_COLON) {
+            for($i = $idx; $i >= ($idx - 20); $i--) {
+                if (is_long($token[0]) && $token[0] == T_STRING) {
+                    $dependencyName = trim($token[1]);
+                    echo "{$dependencyName} might need to be injected for testing purposes\n";
+                    break;
+                }
+            }
         }
     }
 
