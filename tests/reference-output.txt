@@ -1,0 +1,24 @@
+Reading in phpDocumentor structure file...
+
+TestClass.php
+
+Scanning ReferenceClass
+
+returnBoolean -- test method returns boolean values
+acceptParamReturnVoid -- test $value using null or empty strings
+
+acceptParamReturnArray -- test $foo using non-integer values
+
+acceptGrumpyFoo -- mock $foo as \Grumpy\Foo
+
+createsDependency -- mock $value as float
+
+usesStaticMethodCall -- test $value using null or empty strings
+
+returnSpecificObjectType -- test method returns \Grumpy\Foo instances
+_returnBoolean -- non-public methods are difficult to test in isolation
+_returnBoolean -- test $value using non-integer values
+
+\Grumpy\Foo might need to be injected for testing purposes
+\Grumpy\Foo might need to be injected for testing purposes
+
