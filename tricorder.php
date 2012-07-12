@@ -79,21 +79,25 @@ function dependencyCheck($pathToFile) {
             $dependencyFlag = true;
             $dependencyName = '';
         } elseif (is_long($token[0]) && $token[0] == T_DOUBLE_COLON) {
-            for($i = $idx; $i >= ($idx - 20); $i--) {
-                if (is_long($token[0]) && $token[0] == T_STRING) {
-                    $dependencyName = trim($token[1]);
-                    echo "{$dependencyName} might need to be injected for testing purposes\n";
-                    break;
+            $i = $idx;
+            $dependencyName = '';
+             
+            while (!is_string($tokens[$i])) {
+                if (is_long($tokens[$i][0]) 
+                    && $tokens[$i][0] !== T_DOUBLE_COLON
+                    && $tokens[$i][0] !== ''
+                    ) {
+                    $dependencyName = $tokens[$i][1] . $dependencyName;
                 }
+
+                $i--;
             }
+
+            $dependencyName = trim($dependencyName);
+            echo "{$dependencyName} might need to be injected for testing purposes due to static method call\n";
         }
     }
 
-    // Grab the tokens
-    // Iterate through each token
-    // if we previously found T_NEW, grab name of class
-    // display name of class as potential dependency to inject
-    // else when we discover a T_NEW, flag it
 }
 
 /**
