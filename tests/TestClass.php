@@ -82,7 +82,8 @@ class ReferenceClass
 	 */
 	public function usesStaticMethodCall($value)
 	{
-		return \Grumpy\Foo::fizzBuzz($value);
+		$tmp = \Grumpy\Foo::fizzBuzz($value);
+		return $tmp;
 	}
 
 	/**
