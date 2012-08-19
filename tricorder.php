@@ -235,7 +235,7 @@ function processArgumentType($methodName, $tag, $tricorderTags) {
         'integer'
     );
     $argHasSuggestions = false;
-    $varName = isset($tag['variable']) ? $tag['variable'] : null;
+    $varName = $tag['@attributes']['variable'] ?: null;
     $tagType = $tag['type'];
 
     $coverage = array();
