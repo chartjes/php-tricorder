@@ -85,7 +85,7 @@ function dependencyCheck($pathToFile) {
             } else {
                 $dependencyFlag = false;
                 $dependencyName = trim($dependencyName);
-                echo "{$dependencyName} might need to be injected for testing purposes\n";
+                echo "{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes\n";
             }
         }
 
@@ -108,7 +108,7 @@ function dependencyCheck($pathToFile) {
             }
 
             $dependencyName = trim($dependencyName);
-            echo "{$dependencyName} might need to be injected for testing purposes due to static method call\n";
+            echo "{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes due to static method call\n";
         }
     }
 
@@ -308,8 +308,8 @@ function processReturnType($methodName, $tag, $tricorderTags) {
     }
 
     $tagType = $tagInfo['type'];
-
     $coverage = array();
+
     foreach ($tricorderTags as $tag) {
         if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodReturns(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
             array_push($coverage, strtolower($matches[1]));
@@ -323,27 +323,28 @@ function processReturnType($methodName, $tag, $tricorderTags) {
     if (stristr('|', $tagType) === true) {
         $tagType = 'mixed';
     }
-    
+
+    // Make sure to not bother with this if we already ran into this
+    if (in_array($tagType, $coverage)) {
+        return false;
+    }
+
     switch ($tagType) {
         case 'mixed':
             $msg = "test method returns all potential values";
             break;
         case 'bool':
         case 'boolean':
-            if (in_array('boolean', $coverage) || in_array('bool', $coverage)) return false;
             $msg = "test method returns boolean values";
             break;
         case 'int':
         case 'integer':
-            if (in_array('integer', $coverage) || in_array('int', $coverage)) return false;
             $msg = "test method returns non-integer values";
             break;
         case 'string':
-            if (in_array('string', $coverage)) return false;
             $msg = "test method returns expected string values"; 
             break;
         default:
-            if (in_array($tagType, $coverage)) return false;
             $msg = "test method returns {$tagType} instances";
             break;
     } 
