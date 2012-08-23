@@ -11,17 +11,30 @@
  */
 array_shift($argv);
 
-if (count($argv) == 0 || $argv[0] == '--help') {
+function showHelp() {
     echo "PHP-Tricoder - by Chris Hartjes" . PHP_EOL . PHP_EOL;
     echo "PHP-Tricoder analyzes phpDocumentor output to provide" . PHP_EOL;
     echo "suggestions on test scenarios and point out potential" . PHP_EOL;
     echo "problems" . PHP_EOL . PHP_EOL;
-    echo "Usage: php tricoder.php </path/to/structure.xml>" . PHP_EOL . PHP_EOL;;
+    echo "Usage: php tricoder.php [--help] [--path=</path/to/source>] </path/to/structure.xml>" . PHP_EOL . PHP_EOL;;
     exit();
 }
 
+if (count($argv) == 0) {
+    showHelp();
+}
+
+$basePath = '.';
+for($argCounter = 0; $argCounter < count($argv); $argCounter++) {
+    if ($argv[$argCounter] == '--help') {
+        showHelp();
+    } else if (preg_match('/--path=(.*)/', $argv[$argCounter], $matches)) {
+        $basePath = $matches[1];
+    }
+}
+
 // Let's see if we have an actual file
-$structureFile = $argv[0];
+$structureFile = $argv[count($argv)-1];
 
 if (!file_exists($structureFile)) {
     echo "Could not find phpDocumenter file [{$structureFile}]" . PHP_EOL . PHP_EOL;
@@ -48,7 +61,8 @@ if (!$files) {
 foreach ($files as $file) {
     echo $file['path'] . PHP_EOL . PHP_EOL;
     scanClasses($file->class);
-    dependencyCheck($file['path']);
+    $filePath = join(DIRECTORY_SEPARATOR, array($basePath, $file['path']));
+    dependencyCheck($filePath);
     echo "\n";
 }
 
