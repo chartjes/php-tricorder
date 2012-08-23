@@ -29,6 +29,17 @@ class ReferenceClass
 	}
 
 	/**
+	 * Public method that accepts no parameter but returns boolean
+	 * 
+	 * @return boolean
+	 * @tricorder coversMethodReturnsBooleanValues testMethodReturnsBooleanValues
+	 */
+	public function returnBooleanCovered()
+	{
+		return true;
+	}
+
+	/**
 	 * Public method that accepts one parameter and returns nothing
 	 *
 	 * @param string $value
@@ -40,12 +51,38 @@ class ReferenceClass
 	}
 
 	/**
+	 * Public method that accepts one parameter and returns nothing
+	 *
+	 * @param string $value
+	 * @return void
+	 * @tricorder coversMethodAcceptsStringValues testMethodAcceptsStringValues
+	 * @tricorder coversMethodReturnsVoidValues testMethodReturnsVoidValues
+	 */
+	public function acceptParamReturnVoidCovered($value)
+	{
+		// Do some work on $value if you want	
+	}
+
+	/**
 	 * Public method that accepts one parameter and returns an array 
 	 *
 	 * @param integer $foo
 	 * @return array 
 	 */
 	public function acceptParamReturnArray($foo)
+	{
+		return array('foo' => $foo);
+	} 
+
+	/**
+	 * Public method that accepts one parameter and returns an array 
+	 *
+	 * @param integer $foo
+	 * @return array 
+	 * @tricorder coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues
+	 * @tricorder coversMethodReturnsArrayValues testMethodReturnsArrayValues
+	 */
+	public function acceptParamReturnArrayCovered($foo)
 	{
 		return array('foo' => $foo);
 	} 
