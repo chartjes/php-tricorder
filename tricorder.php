@@ -140,30 +140,41 @@ function scanMethods($methods) {
         );
 
         // Convert our tag information into an array for easy manipulation
-        $methodTags = json_decode(json_encode((array)$method->docblock->tag), 1);
+        $methodTags = array();
+        foreach ($method->docblock->tag as $tag) {
+            array_push($methodTags, json_decode(json_encode((array)$tag), 1));
+        }
+
+        $tricorderTags = array_filter($methodTags, function($tag) {
+            if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'tricorder') {
+                return true;
+            }
+        });
 
         // Check to see if we have any parameters that we need to test
         $paramTags = array_filter($methodTags, function($tag) {
-            if (isset($tag['name']) && $tag['name'] == 'param') {
+            if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'param') {
                 return true;
             }
         });
 
         $argsHaveSuggestions = scanArguments(
             (string)$method->name, 
-            $paramTags
+            $paramTags,
+            $tricorderTags
         );
 
         // Grab our method return information 
         $returnTag = array_filter($methodTags, function($tag) {
-            if (isset($tag['name']) &&$tag['name'] == 'return') {
+            if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'return') {
                 return true;
             }
         });
         
         $returnTypeHasSuggestions = processReturnType(
             (string)$method->name,
-            $returnTag
+            $returnTag,
+            $tricorderTags
         );
 
         echo ($methodHasSuggestions == false 
@@ -200,11 +211,11 @@ function isVisibile($methodName, $visibility) {
  * @param array $tags
  * @return boolean
  */
-function scanArguments($methodName, $tags) {
+function scanArguments($methodName, $tags, $tricorderTags) {
     $argumentsHaveSuggestions = array();
 
     foreach ($tags as $tag) {
-        $argumentsHaveSuggestions[] = processArgumentType($methodName, $tag);
+        $argumentsHaveSuggestions[] = processArgumentType($methodName, $tag, $tricorderTags);
     }
 
     return in_array(true, $argumentsHaveSuggestions);
@@ -217,15 +228,22 @@ function scanArguments($methodName, $tags) {
  * @param array $tag
  * @return boolean
  */
-function processArgumentType($methodName, $tag) {
+function processArgumentType($methodName, $tag, $tricorderTags) {
     $acceptedTypes = array(
         'array',
         'string', 
         'integer'
     );
     $argHasSuggestions = false;
-    $varName = $tag['variable'];
+    $varName = isset($tag['variable']) ? $tag['variable'] : null;
     $tagType = $tag['type'];
+
+    $coverage = array();
+    foreach ($tricorderTags as $tag) {
+        if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodAccepts(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
+            array_push($coverage, strtolower($matches[1]));
+        }
+    }
 
     /**
      * Sometimes people send us param types like bool|string, so we need to
@@ -237,16 +255,19 @@ function processArgumentType($methodName, $tag) {
     
     switch ($tagType) {
         case 'array':
+            if (in_array('array', $coverage)) return false;
             $msg = "test {$varName} using an empty array()";
             $argHasSuggestions = true;
             break;
         case 'bool':
         case 'boolean':
+            if (in_array('bool', $coverage) || in_array('boolean', $coverage)) return false;
             $msg = "test {$varName} using both true and false";
             $argHasSuggestions = true;
             break;
         case 'int':
         case 'integer':
+            if (in_array('int', $coverage) || in_array('integer', $coverage)) return false;
             $msg = "test {$varName} using non-integer values";
             $argHasSuggestions = true;
             break;
@@ -255,6 +276,7 @@ function processArgumentType($methodName, $tag) {
             $argHasSuggestions = true;
             break;
         case 'string':
+            if (in_array('string', $coverage)) return false;
             $msg = "test {$varName} using null or empty strings"; 
             $argHasSuggestions = true;
             break;
@@ -277,7 +299,7 @@ function processArgumentType($methodName, $tag) {
  * @param array $tag
  * @return boolean
  */
-function processReturnType($methodName, $tag) {
+function processReturnType($methodName, $tag, $tricorderTags) {
     // Flatten the array a bit so we can check for attributes
     $tagInfo = array_shift($tag);
     
@@ -286,7 +308,14 @@ function processReturnType($methodName, $tag) {
     }
 
     $tagType = $tagInfo['type'];
-    
+
+    $coverage = array();
+    foreach ($tricorderTags as $tag) {
+        if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodReturns(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
+            array_push($coverage, strtolower($matches[1]));
+        }
+    }
+
     /**
      * Sometimes people send us return types like bool|string, so we need to
      * search for those and convert them to 'mixed'
@@ -301,16 +330,20 @@ function processReturnType($methodName, $tag) {
             break;
         case 'bool':
         case 'boolean':
+            if (in_array('boolean', $coverage) || in_array('bool', $coverage)) return false;
             $msg = "test method returns boolean values";
             break;
         case 'int':
         case 'integer':
+            if (in_array('integer', $coverage) || in_array('int', $coverage)) return false;
             $msg = "test method returns non-integer values";
             break;
         case 'string':
+            if (in_array('string', $coverage)) return false;
             $msg = "test method returns expected string values"; 
             break;
         default:
+            if (in_array($tagType, $coverage)) return false;
             $msg = "test method returns {$tagType} instances";
             break;
     } 
