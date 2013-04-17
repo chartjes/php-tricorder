@@ -5,20 +5,26 @@ TestClass.php
 Scanning ReferenceClass
 
 returnBoolean -- test method returns boolean values
-acceptParamReturnVoid -- test $value using null or empty strings
+acceptStringParam -- test $value using null or empty strings
 
-acceptParamReturnArray -- test $foo using non-integer values
+returnVoid -- test method returns void instances
+acceptIntegerParam -- test $foo using non-integer values
 
+returnArray -- test method returns array instances
 acceptGrumpyFoo -- mock $foo as \Grumpy\Foo
 
-createsDependency -- mock $value as float
+returnInteger -- test method returns non-integer values
+acceptFloatParam -- mock $value as float
 
-usesStaticMethodCall -- test $value using null or empty strings
+passArgumentToObject -- mock $foo as \Grumpy\Argument\Foo
+
+returnValueFromObject -- mock $foo as \Grumpy\Returns\Foo
+returnValueFromObject -- test method returns non-integer values
 
 returnSpecificObjectType -- test method returns \Grumpy\Foo instances
-_returnBoolean -- non-public methods are difficult to test in isolation
-_returnBoolean -- test $value using non-integer values
+_protectedMethod -- non-public methods are difficult to test in isolation
 
-\Grumpy\Foo might need to be injected for testing purposes
-\Grumpy\Foo might need to be injected for testing purposes
+./TestClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes
+./TestClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call
+./TestClass.php -- \Grumpy\Foo might need to be injected for testing purposes
 

@@ -30,7 +30,7 @@ class ReferenceClass
 
 	/**
 	 * Public method that accepts no parameter but returns boolean
-	 * 
+	 *
 	 * @return boolean
 	 * @tricorder coversMethodReturnsBooleanValues testMethodReturnsBooleanValues
 	 */
@@ -40,93 +40,157 @@ class ReferenceClass
 	}
 
 	/**
-	 * Public method that accepts one parameter and returns nothing
+	 * Public method that accepts one parameter
 	 *
 	 * @param string $value
-	 * @return void
 	 */
-	public function acceptParamReturnVoid($value)
+	public function acceptStringParam($value)
 	{
-		// Do some work on $value if you want	
+		// Do some work on $value if you want
 	}
 
+    /**
+     * Public method returns nothing
+     *
+     * @return void
+     */
+    public function returnVoid()
+    {
+    }
+
 	/**
-	 * Public method that accepts one parameter and returns nothing
+	 * Public method that accepts one string parameter
 	 *
 	 * @param string $value
-	 * @return void
 	 * @tricorder coversMethodAcceptsStringValues testMethodAcceptsStringValues
-	 * @tricorder coversMethodReturnsVoidValues testMethodReturnsVoidValues
 	 */
-	public function acceptParamReturnVoidCovered($value)
+	public function acceptStringParamCovered($value)
 	{
-		// Do some work on $value if you want	
+		// Do some work on $value if you want
 	}
 
-	/**
-	 * Public method that accepts one parameter and returns an array 
-	 *
-	 * @param integer $foo
-	 * @return array 
-	 */
-	public function acceptParamReturnArray($foo)
-	{
-		return array('foo' => $foo);
-	} 
+    /**
+     * Public method returns nothing
+     *
+     * @return void
+     * @tricorder coversMethodReturnsVoidValues testMethodReturnsVoidValues
+     */
+    public function returnVoidCovered()
+    {
+    }
 
-	/**
-	 * Public method that accepts one parameter and returns an array 
+    /**
+     * Public method that accepts integer
+     *
+     * @param integer $foo
+     */
+    public function acceptIntegerParam($foo)
+    {
+    }
+
+    /**
+     * Public method returns an array
+     *
+     * @return array
+     */
+    public function returnArray()
+    {
+        return array('foo' => 0);
+    }
+
+    /**
+	 * Public method that accepts one integer parameter
 	 *
 	 * @param integer $foo
-	 * @return array 
 	 * @tricorder coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues
-	 * @tricorder coversMethodReturnsArrayValues testMethodReturnsArrayValues
 	 */
-	public function acceptParamReturnArrayCovered($foo)
+	public function acceptIntegerParamCovered($foo)
 	{
-		return array('foo' => $foo);
-	} 
+	}
 
-	/**
-	 * Public method that accepts a parameter of a specific type and returns
-	 * an integer
+    /**
+     * Public method that returns an array
+     *
+     * @return array
+     * @tricorder coversMethodReturnsArrayValues testMethodReturnsArrayValues
+     */
+    public function returnArrayCovered()
+    {
+        return array('foo' => 0);
+    }
+
+    /**
+	 * Public method that accepts a parameter of a specific type
 	 *
 	 * @param \Grumpy\Foo $foo
-	 * @return integer
 	 */
 	public function acceptGrumpyFoo(\Grumpy\Foo $foo)
 	{
-		return 3;
 	}
 
-	/**
-	 * Public method that instantiates a dependency inside it
-	 *
-	 * @param float $value
-	 * @return integer
-	 */
-	public function createsDependency($value)
-	{
-		$foo = new \Grumpy\Foo();
-		return $foo->fizzBuzz($value);
-	}
+    /**
+     * Public method that returns an integer
+     *
+     * @return integer
+     */
+    public function returnInteger()
+    {
+        return 3;
+    }
+
+    /**
+     * Public method that accept float value
+     *
+     * @param float $value
+     */
+    public function acceptFloatParam($value)
+    {
+    }
+
+    /**
+     * Public method that instantiates a dependency inside it
+     */
+    public function createsDependency()
+    {
+        new \Grumpy\Dependency\Foo();
+    }
+
+    /**
+     * Public method that depends on a method call with a value
+     *
+     * @todo
+     * @param Grumpy\Argument\Foo $foo
+     */
+    public function passArgumentToObject(\Grumpy\Argument\Foo $foo)
+    {
+        $foo->fizzBuzz(0);
+    }
+
+    /**
+     * Public method that returns the value from an object
+     *
+     * @todo
+     * @param Grumpy\Returns\Foo $foo
+     *
+     * @return integer
+     */
+    public function returnValueFromObject(\Grumpy\Returns\Foo $foo)
+    {
+        return $foo->fizzBuzz();
+    }
 
 	/**
 	 * Public method that does a static method call inside
-	 *
-	 * @param string $value
-	 * @return string
 	 */
-	public function usesStaticMethodCall($value)
+	public function usesStaticMethodCall()
 	{
-		$tmp = \Grumpy\Foo::fizzBuzz($value);
-		return $tmp;
+		\Grumpy\Foo::fizzBuzz();
 	}
 
 	/**
-	 * Public method that returns a specfic object type
-	 * 
-	 * @return \Grumpy\Foo 
+	 * Public method that returns a specific object type
+	 *
+	 * @return \Grumpy\Foo
 	 */
 	public function returnSpecificObjectType()
 	{
@@ -134,16 +198,9 @@ class ReferenceClass
 	}
 
 	/**
-	 * Protected method that accepts a value and returns a boolean
-	 * @param integer $value
-	 * @return boolean
+	 * Protected method are hard to test
 	 */
-	protected function _returnBoolean($value)
+	protected function _protectedMethod()
 	{
-		if ($value % 2 == 0) {
-			return true;
-		}
-
-		return false;
 	}
 }

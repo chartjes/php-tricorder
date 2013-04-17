@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0a10" title="">
-  <file path="TestClass.php" hash="d933880b36696cfca32122fe98b55a38" package="php-tricorder">
+<project version="2.0.0a12" title="">
+  <file path="TestClass.php" hash="36cc8b674590d715736700ef5343b8ea" package="php-tricorder">
     <docblock line="3">
-      <description><![CDATA[Class to be used as a reference for testing purposes]]></description>
-      <long-description><![CDATA[]]></long-description>
+      <description>Class to be used as a reference for testing purposes</description>
+      <long-description></long-description>
       <tag line="3" name="package" description="php-tricorder"/>
       <tag line="3" name="author" description="Chris Hartjes"/>
     </docblock>
@@ -12,15 +12,15 @@
       <name>ReferenceClass</name>
       <full_name>\ReferenceClass</full_name>
       <docblock line="10">
-        <description><![CDATA[ReferenceClass]]></description>
-        <long-description><![CDATA[]]></long-description>
+        <description>ReferenceClass</description>
+        <long-description></long-description>
       </docblock>
       <property final="false" static="false" visibility="protected" line="19" namespace="global" package="Default">
         <name>$_db</name>
-        <default><![CDATA[]]></default>
+        <default></default>
         <docblock line="15">
-          <description><![CDATA[Sample protected DB attribute]]></description>
-          <long-description><![CDATA[]]></long-description>
+          <description>Sample protected DB attribute</description>
+          <long-description></long-description>
           <tag line="15" name="type" description="\PDO"/>
         </docblock>
       </property>
@@ -28,8 +28,8 @@
         <name>returnBoolean</name>
         <full_name>returnBoolean</full_name>
         <docblock line="21">
-          <description><![CDATA[Public method that accepts no parameter but returns boolean]]></description>
-          <long-description><![CDATA[]]></long-description>
+          <description>Public method that accepts no parameter but returns boolean</description>
+          <long-description></long-description>
           <tag line="21" name="return" description="" type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
@@ -39,188 +39,247 @@
         <name>returnBooleanCovered</name>
         <full_name>returnBooleanCovered</full_name>
         <docblock line="31">
-          <description><![CDATA[Public method that accepts no parameter but returns boolean]]></description>
-          <long-description><![CDATA[]]></long-description>
+          <description>Public method that accepts no parameter but returns boolean</description>
+          <long-description></long-description>
           <tag line="31" name="return" description="" type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
           <tag line="31" name="tricorder" description="coversMethodReturnsBooleanValues testMethodReturnsBooleanValues"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="48" package="Default">
-        <name>acceptParamReturnVoid</name>
-        <full_name>acceptParamReturnVoid</full_name>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="47" package="Default">
+        <name>acceptStringParam</name>
+        <full_name>acceptStringParam</full_name>
         <docblock line="42">
-          <description><![CDATA[Public method that accepts one parameter and returns nothing]]></description>
-          <long-description><![CDATA[]]></long-description>
+          <description>Public method that accepts one parameter</description>
+          <long-description></long-description>
           <tag line="42" name="param" description="" type="string" variable="$value">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="42" name="return" description="" type="void">
-            <type by_reference="false">void</type>
-          </tag>
         </docblock>
-        <argument line="48">
+        <argument line="47">
           <name>$value</name>
-          <default><![CDATA[]]></default>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="61" package="Default">
-        <name>acceptParamReturnVoidCovered</name>
-        <full_name>acceptParamReturnVoidCovered</full_name>
-        <docblock line="53">
-          <description><![CDATA[Public method that accepts one parameter and returns nothing]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="53" name="param" description="" type="string" variable="$value">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="57" package="Default">
+        <name>returnVoid</name>
+        <full_name>returnVoid</full_name>
+        <docblock line="52">
+          <description>Public method returns nothing</description>
+          <long-description></long-description>
+          <tag line="52" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="67" package="Default">
+        <name>acceptStringParamCovered</name>
+        <full_name>acceptStringParamCovered</full_name>
+        <docblock line="61">
+          <description>Public method that accepts one string parameter</description>
+          <long-description></long-description>
+          <tag line="61" name="param" description="" type="string" variable="$value">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="53" name="return" description="" type="void">
+          <tag line="61" name="tricorder" description="coversMethodAcceptsStringValues testMethodAcceptsStringValues"/>
+        </docblock>
+        <argument line="67">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="78" package="Default">
+        <name>returnVoidCovered</name>
+        <full_name>returnVoidCovered</full_name>
+        <docblock line="72">
+          <description>Public method returns nothing</description>
+          <long-description></long-description>
+          <tag line="72" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
-          <tag line="53" name="tricorder" description="coversMethodAcceptsStringValues testMethodAcceptsStringValues"/>
-          <tag line="53" name="tricorder" description="coversMethodReturnsVoidValues testMethodReturnsVoidValues"/>
+          <tag line="72" name="tricorder" description="coversMethodReturnsVoidValues testMethodReturnsVoidValues"/>
         </docblock>
-        <argument line="61">
-          <name>$value</name>
-          <default><![CDATA[]]></default>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="87" package="Default">
+        <name>acceptIntegerParam</name>
+        <full_name>acceptIntegerParam</full_name>
+        <docblock line="82">
+          <description>Public method that accepts integer</description>
+          <long-description></long-description>
+          <tag line="82" name="param" description="" type="integer" variable="$foo">
+            <type by_reference="false">integer</type>
+          </tag>
+        </docblock>
+        <argument line="87">
+          <name>$foo</name>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="72" package="Default">
-        <name>acceptParamReturnArray</name>
-        <full_name>acceptParamReturnArray</full_name>
-        <docblock line="66">
-          <description><![CDATA[Public method that accepts one parameter and returns an array]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="66" name="param" description="" type="integer" variable="$foo">
-            <type by_reference="false">integer</type>
-          </tag>
-          <tag line="66" name="return" description="" type="array">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="96" package="Default">
+        <name>returnArray</name>
+        <full_name>returnArray</full_name>
+        <docblock line="91">
+          <description>Public method returns an array</description>
+          <long-description></long-description>
+          <tag line="91" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="72">
-          <name>$foo</name>
-          <default><![CDATA[]]></default>
-          <type/>
-        </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="85" package="Default">
-        <name>acceptParamReturnArrayCovered</name>
-        <full_name>acceptParamReturnArrayCovered</full_name>
-        <docblock line="77">
-          <description><![CDATA[Public method that accepts one parameter and returns an array]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="77" name="param" description="" type="integer" variable="$foo">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="107" package="Default">
+        <name>acceptIntegerParamCovered</name>
+        <full_name>acceptIntegerParamCovered</full_name>
+        <docblock line="101">
+          <description>Public method that accepts one integer parameter</description>
+          <long-description></long-description>
+          <tag line="101" name="param" description="" type="integer" variable="$foo">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="77" name="return" description="" type="array">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="77" name="tricorder" description="coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues"/>
-          <tag line="77" name="tricorder" description="coversMethodReturnsArrayValues testMethodReturnsArrayValues"/>
+          <tag line="101" name="tricorder" description="coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues"/>
         </docblock>
-        <argument line="85">
+        <argument line="107">
           <name>$foo</name>
-          <default><![CDATA[]]></default>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="97" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="117" package="Default">
+        <name>returnArrayCovered</name>
+        <full_name>returnArrayCovered</full_name>
+        <docblock line="111">
+          <description>Public method that returns an array</description>
+          <long-description></long-description>
+          <tag line="111" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="111" name="tricorder" description="coversMethodReturnsArrayValues testMethodReturnsArrayValues"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="127" package="Default">
         <name>acceptGrumpyFoo</name>
         <full_name>acceptGrumpyFoo</full_name>
-        <docblock line="90">
-          <description><![CDATA[Public method that accepts a parameter of a specific type and returns
-an integer]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="90" name="param" description="" type="\Grumpy\Foo" variable="$foo">
+        <docblock line="122">
+          <description>Public method that accepts a parameter of a specific type</description>
+          <long-description></long-description>
+          <tag line="122" name="param" description="" type="\Grumpy\Foo" variable="$foo">
             <type by_reference="false">\Grumpy\Foo</type>
           </tag>
-          <tag line="90" name="return" description="" type="integer">
-            <type by_reference="false">integer</type>
-          </tag>
         </docblock>
-        <argument line="97">
+        <argument line="127">
           <name>$foo</name>
-          <default><![CDATA[]]></default>
+          <default></default>
           <type>\Grumpy\Foo</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="108" package="Default">
-        <name>createsDependency</name>
-        <full_name>createsDependency</full_name>
-        <docblock line="102">
-          <description><![CDATA[Public method that instantiates a dependency inside it]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="102" name="param" description="" type="float" variable="$value">
-            <type by_reference="false">float</type>
-          </tag>
-          <tag line="102" name="return" description="" type="integer">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="136" package="Default">
+        <name>returnInteger</name>
+        <full_name>returnInteger</full_name>
+        <docblock line="131">
+          <description>Public method that returns an integer</description>
+          <long-description></long-description>
+          <tag line="131" name="return" description="" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="108">
-          <name>$value</name>
-          <default><![CDATA[]]></default>
-          <type/>
-        </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="120" package="Default">
-        <name>usesStaticMethodCall</name>
-        <full_name>usesStaticMethodCall</full_name>
-        <docblock line="114">
-          <description><![CDATA[Public method that does a static method call inside]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="114" name="param" description="" type="string" variable="$value">
-            <type by_reference="false">string</type>
-          </tag>
-          <tag line="114" name="return" description="" type="string">
-            <type by_reference="false">string</type>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="146" package="Default">
+        <name>acceptFloatParam</name>
+        <full_name>acceptFloatParam</full_name>
+        <docblock line="141">
+          <description>Public method that accept float value</description>
+          <long-description></long-description>
+          <tag line="141" name="param" description="" type="float" variable="$value">
+            <type by_reference="false">float</type>
           </tag>
         </docblock>
-        <argument line="120">
+        <argument line="146">
           <name>$value</name>
-          <default><![CDATA[]]></default>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="131" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="153" package="Default">
+        <name>createsDependency</name>
+        <full_name>createsDependency</full_name>
+        <docblock line="150">
+          <description>Public method that instantiates a dependency inside it</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="164" package="Default">
+        <name>passArgumentToObject</name>
+        <full_name>passArgumentToObject</full_name>
+        <docblock line="158">
+          <description>Public method that depends on a method call with a value</description>
+          <long-description></long-description>
+          <tag line="158" name="todo" description=""/>
+          <tag line="158" name="param" description="" type="\Grumpy\Argument\Foo" variable="$foo">
+            <type by_reference="false">\Grumpy\Argument\Foo</type>
+          </tag>
+        </docblock>
+        <argument line="164">
+          <name>$foo</name>
+          <default></default>
+          <type>\Grumpy\Argument\Foo</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="177" package="Default">
+        <name>returnValueFromObject</name>
+        <full_name>returnValueFromObject</full_name>
+        <docblock line="169">
+          <description>Public method that returns the value from an object</description>
+          <long-description></long-description>
+          <tag line="169" name="todo" description=""/>
+          <tag line="169" name="param" description="" type="\Grumpy\Returns\Foo" variable="$foo">
+            <type by_reference="false">\Grumpy\Returns\Foo</type>
+          </tag>
+          <tag line="169" name="return" description="" type="integer">
+            <type by_reference="false">integer</type>
+          </tag>
+        </docblock>
+        <argument line="177">
+          <name>$foo</name>
+          <default></default>
+          <type>\Grumpy\Returns\Foo</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="185" package="Default">
+        <name>usesStaticMethodCall</name>
+        <full_name>usesStaticMethodCall</full_name>
+        <docblock line="182">
+          <description>Public method that does a static method call inside</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="195" package="Default">
         <name>returnSpecificObjectType</name>
         <full_name>returnSpecificObjectType</full_name>
-        <docblock line="126">
-          <description><![CDATA[Public method that returns a specfic object type]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="126" name="return" description="" type="\Grumpy\Foo">
+        <docblock line="190">
+          <description>Public method that returns a specific object type</description>
+          <long-description></long-description>
+          <tag line="190" name="return" description="" type="\Grumpy\Foo">
             <type by_reference="false">\Grumpy\Foo</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="141" package="Default">
-        <name>_returnBoolean</name>
-        <full_name>_returnBoolean</full_name>
-        <docblock line="136">
-          <description><![CDATA[Protected method that accepts a value and returns a boolean]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="136" name="param" description="" type="integer" variable="$value">
-            <type by_reference="false">integer</type>
-          </tag>
-          <tag line="136" name="return" description="" type="boolean">
-            <type by_reference="false">boolean</type>
-          </tag>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="203" package="Default">
+        <name>_protectedMethod</name>
+        <full_name>_protectedMethod</full_name>
+        <docblock line="200">
+          <description>Protected method are hard to test</description>
+          <long-description></long-description>
         </docblock>
-        <argument line="141">
-          <name>$value</name>
-          <default><![CDATA[]]></default>
-          <type/>
-        </argument>
       </method>
     </class>
   </file>
   <package name="Default" full_name="Default"/>
   <package name="php-tricorder" full_name="php-tricorder"/>
   <namespace name="global" full_name="global"/>
-  <marker count="0">todo</marker>
+  <marker count="2">todo</marker>
   <marker count="0">fixme</marker>
   <deprecated count="0"/>
 </project>
