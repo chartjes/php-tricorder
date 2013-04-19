@@ -55,7 +55,7 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
             array('acceptFloatParam -- mock $value as float'),
             array('./TestClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes'),
             array('./TestClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call'),
-        array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'), array('_protectedMethod -- non-public methods are difficult to test in isolation'),
+            array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'), array('_protectedMethod -- non-public methods are difficult to test in isolation'),
         );
     }
 
