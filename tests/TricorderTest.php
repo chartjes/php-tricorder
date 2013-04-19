@@ -76,33 +76,6 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete('todo');
     }
 
-    public function testShouldNotSuggestCoveredAnnotationOfBoolean()
-    {
-        $this->assertNotContains('returnBooleanCovered', self::$output);
-    }
-    
-    public function testShouldNotOutputCoveredAnnotationForStringArgumentValue()
-    {
-        $this->assertNotContains('acceptStringParamCovered', self::$output);
-    }
-
-    public function testShouldNotOutputCoveredAnnotationForVoidReturnedValue()
-    {
-        $this->assertNotContains('returnVoidCovered', self::$output);
-    }
-    
-    public function testShouldNotOutputCoveredMethodAcceptsIntegerValuesAndArrayValues()
-    {
-        $this->assertNotContains('acceptIntegerParamCovered', self::$output);
-    }
-
-    public function testShouldNotOutputCoveredMethodForReturnedArray()
-    {
-        $this->assertNotContains('returnArrayCovered', self::$output);
-    }
-
-
-
     public function testShouldSuggestToTestReturnedValueFromMockObject()
     {
         $this->markTestIncomplete('returnValueFromObject: Suggest to test returned value from mock ->will($this->returnValue())');
@@ -112,7 +85,4 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestIncomplete('passArgumentToObject: Suggest to test argument passed to mock ->with($value)');
     }
-
-
-
 }
