@@ -51,7 +51,7 @@ if (!$structureData) {
     echo " file, please verify it's contents" . PHP_EOL;
     exit();
 }
-        
+
 $files = $structureData->{'file'};
 
 if (!$files) {
@@ -69,6 +69,8 @@ foreach ($files as $file) {
 /**
  * Read in our file, analyze the tokens and look for classes that might be
  * dependencies that need to be injected
+ *
+ * @param string $pathToFile
  */
 function dependencyCheck($pathToFile) {
     $tokens = token_get_all(file_get_contents($pathToFile));
@@ -111,7 +113,6 @@ function dependencyCheck($pathToFile) {
             echo "{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes due to static method call\n";
         }
     }
-
 }
 
 /**
@@ -134,7 +135,7 @@ function scanClasses($classXml) {
  */
 function scanMethods($methods) {
     foreach ($methods as $method) {
-        $methodHasSuggestions = isVisibile(
+        $methodHasSuggestions = isVisible(
             (string)$method->name,
             (string)$method['visibility']
         );
@@ -177,7 +178,7 @@ function scanMethods($methods) {
             $tricorderTags
         );
 
-        echo ($methodHasSuggestions == false 
+        echo ($methodHasSuggestions == false
             && $argsHaveSuggestions == false
             && $returnTypeHasSuggestions == false)
             ? '' 
@@ -186,12 +187,14 @@ function scanMethods($methods) {
 }
 
 /**
- * Determine if the method passed in is publically visible
+ * Determine if the method passed in is publicly visible
  *
  * @param string $methodName
  * @param string $visibility
+ *
+ * @return bool Whether the method is public
  */
-function isVisibile($methodName, $visibility) {
+function isVisible($methodName, $visibility) {
     $methodIsVisible = false;
 
     // If a method is protected, flag it as hard-to-test
@@ -208,7 +211,9 @@ function isVisibile($methodName, $visibility) {
  * to see what the types are
  *
  * @param string $methodName
- * @param array $tags
+ * @param array  $tags
+ * @param array  $tricorderTags
+ *
  * @return boolean
  */
 function scanArguments($methodName, $tags, $tricorderTags) {
@@ -225,15 +230,19 @@ function scanArguments($methodName, $tags, $tricorderTags) {
  * Look at the argument type and react accordingly
  *
  * @param string $methodName
- * @param array $tag
+ * @param array  $tag
+ * @param array  $tricorderTags
+ *
  * @return boolean
  */
 function processArgumentType($methodName, $tag, $tricorderTags) {
+    // @todo Variable not used in scope
     $acceptedTypes = array(
         'array',
         'string', 
         'integer'
     );
+
     $argHasSuggestions = false;
     $varName = $tag['@attributes']['variable'] ?: null;
     $tagType = $tag['type'];
@@ -296,14 +305,16 @@ function processArgumentType($methodName, $tag, $tricorderTags) {
  * Look at the return type and react accordingly
  *
  * @param string $methodName
- * @param array $tag
+ * @param array  $tag
+ * @param array  $tricorderTags
+ *
  * @return boolean
  */
 function processReturnType($methodName, $tag, $tricorderTags) {
     // Flatten the array a bit so we can check for attributes
     $tagInfo = array_shift($tag);
-    
-    if ($tagInfo == NULL) {
+
+    if ($tagInfo == null) {
         return false;
     }
 
