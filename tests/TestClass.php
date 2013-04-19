@@ -12,42 +12,42 @@
  */
 class ReferenceClass
 {
-	/**
-	 * Sample protected DB attribute
-	 * @type \PDO 
-	 */
-	protected $_db;
+    /**
+     * Sample protected DB attribute
+     * @type \PDO 
+     */
+    protected $_db;
 
-	/**
-	 * Public method that accepts no parameter but returns boolean
-	 *
-	 * @return boolean
-	 */
-	public function returnBoolean()
-	{
-		return true;
-	}
+    /**
+     * Public method that accepts no parameter but returns boolean
+     *
+     * @return boolean
+     */
+    public function returnBoolean()
+    {
+        return true;
+    }
 
-	/**
-	 * Public method that accepts no parameter but returns boolean
-	 *
-	 * @return boolean
-	 * @tricorder coversMethodReturnsBooleanValues testMethodReturnsBooleanValues
-	 */
-	public function returnBooleanCovered()
-	{
-		return true;
-	}
+    /**
+     * Public method that accepts no parameter but returns boolean
+     *
+     * @return boolean
+     * @tricorder coversMethodReturnsBooleanValues testMethodReturnsBooleanValues
+     */
+    public function returnBooleanCovered()
+    {
+        return true;
+    }
 
-	/**
-	 * Public method that accepts one parameter
-	 *
-	 * @param string $value
-	 */
-	public function acceptStringParam($value)
-	{
-		// Do some work on $value if you want
-	}
+    /**
+     * Public method that accepts one parameter
+     *
+     * @param string $value
+     */
+    public function acceptStringParam($value)
+    {
+        // Do some work on $value if you want
+    }
 
     /**
      * Public method returns nothing
@@ -58,16 +58,16 @@ class ReferenceClass
     {
     }
 
-	/**
-	 * Public method that accepts one string parameter
-	 *
-	 * @param string $value
-	 * @tricorder coversMethodAcceptsStringValues testMethodAcceptsStringValues
-	 */
-	public function acceptStringParamCovered($value)
-	{
-		// Do some work on $value if you want
-	}
+    /**
+     * Public method that accepts one string parameter
+     *
+     * @param string $value
+     * @tricorder coversMethodAcceptsStringValues testMethodAcceptsStringValues
+     */
+    public function acceptStringParamCovered($value)
+    {
+        // Do some work on $value if you want
+    }
 
     /**
      * Public method returns nothing
@@ -99,14 +99,14 @@ class ReferenceClass
     }
 
     /**
-	 * Public method that accepts one integer parameter
-	 *
-	 * @param integer $foo
-	 * @tricorder coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues
-	 */
-	public function acceptIntegerParamCovered($foo)
-	{
-	}
+     * Public method that accepts one integer parameter
+     *
+     * @param integer $foo
+     * @tricorder coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues
+     */
+    public function acceptIntegerParamCovered($foo)
+    {
+    }
 
     /**
      * Public method that returns an array
@@ -120,13 +120,13 @@ class ReferenceClass
     }
 
     /**
-	 * Public method that accepts a parameter of a specific type
-	 *
-	 * @param \Grumpy\Foo $foo
-	 */
-	public function acceptGrumpyFoo(\Grumpy\Foo $foo)
-	{
-	}
+     * Public method that accepts a parameter of a specific type
+     *
+     * @param \Grumpy\Foo $foo
+     */
+    public function acceptGrumpyFoo(\Grumpy\Foo $foo)
+    {
+    }
 
     /**
      * Public method that returns an integer
@@ -179,28 +179,28 @@ class ReferenceClass
         return $foo->fizzBuzz();
     }
 
-	/**
-	 * Public method that does a static method call inside
-	 */
-	public function usesStaticMethodCall()
-	{
-		\Grumpy\Foo::fizzBuzz();
-	}
+    /**
+     * Public method that does a static method call inside
+     */
+    public function usesStaticMethodCall()
+    {
+        \Grumpy\Foo::fizzBuzz();
+    }
 
-	/**
-	 * Public method that returns a specific object type
-	 *
-	 * @return \Grumpy\Foo
-	 */
-	public function returnSpecificObjectType()
-	{
-		return new \Grumpy\Foo();
-	}
+    /**
+     * Public method that returns a specific object type
+     *
+     * @return \Grumpy\Foo
+     */
+    public function returnSpecificObjectType()
+    {
+        return new \Grumpy\Foo();
+    }
 
-	/**
-	 * Protected method are hard to test
-	 */
-	protected function _protectedMethod()
-	{
-	}
+    /**
+     * Protected method are hard to test
+     */
+    protected function _protectedMethod()
+    {
+    }
 }
