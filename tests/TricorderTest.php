@@ -11,6 +11,13 @@
  * @version 0.1
  */
 
+use Tricorder\Application;
+
+/**
+ * Class TricorderTest
+ *
+ * @author  Yannick Voyer (http://github.com/yvoyer)
+ */
 class TricorderTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -18,9 +25,9 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    private static $output;
+    private $output;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
         // We need to call this only once
         $argv = array(
@@ -29,13 +36,13 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
         );
 
         ob_start();
-        include __DIR__ . "/../tricorder.php";
-        self::$output = ob_get_clean();
+        new Application($argv);
+        $this->output = ob_get_clean();
     }
 
     public function testShouldOutputTheScannedClass()
     {
-        $this->assertContains('Scanning ReferenceClass', self::$output);
+        $this->assertContains('Scanning ReferenceClass', $this->output);
     }
 
     /**
@@ -68,7 +75,7 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
      */
     public function checkForSpecificSuggestions($suggestion)
     {
-        $this->assertContains($suggestion, self::$output);
+        $this->assertContains($suggestion, $this->output);
     } 
 
     public function testShouldSuggestToTestTheProtectedAttributeForAnObjectType()

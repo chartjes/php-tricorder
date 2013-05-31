@@ -14,7 +14,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "": ["tests", ""]
+            "Tricorder": "src",
+            "": ["tests"]
         }
     },
     "require": {
