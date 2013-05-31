@@ -25,7 +25,7 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
         // We need to call this only once
         $argv = array(
             '',
-            'structure.xml',
+            __DIR__ . '/structure.xml',
         );
 
         ob_start();
