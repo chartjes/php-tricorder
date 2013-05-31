@@ -14,11 +14,11 @@
 use Tricorder\Application;
 
 /**
- * Class TricorderTest
+ * Class ApplicationTest
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  */
-class TricorderTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * The output of the command
