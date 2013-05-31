@@ -11,6 +11,8 @@
  * @version 0.1
  */
 
+namespace Tricorder\Tests;
+
 use Tricorder\Application;
 
 /**
@@ -32,7 +34,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         // We need to call this only once
         $argv = array(
             '',
-            __DIR__ . '/structure.xml',
+            '--path=' . __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures',
+            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
         );
 
         ob_start();
@@ -60,9 +63,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             array('acceptGrumpyFoo -- mock $foo as \Grumpy\Foo'),
             array('returnInteger -- test method returns non-integer values'),
             array('acceptFloatParam -- mock $value as float'),
-            array('./TestClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes'),
-            array('./TestClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call'),
-            array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'), array('_protectedMethod -- non-public methods are difficult to test in isolation'),
+            array('/Fixtures/ReferenceClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes'),
+            array('/Fixtures/ReferenceClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call'),
+            array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'),
+            array('_protectedMethod -- non-public methods are difficult to test in isolation'),
         );
     }
 

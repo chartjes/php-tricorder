@@ -7,6 +7,8 @@
  * @author Chris Hartjes
  */
 
+namespace Tricorder\Fixtures;
+
 /**
  * ReferenceClass
  */

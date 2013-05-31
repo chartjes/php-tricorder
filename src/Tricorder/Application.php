@@ -23,10 +23,10 @@ class Application
         }
 
         $basePath = '.';
-        for($argCounter = 0; $argCounter < count($argv); $argCounter++) {
-            if ($argv[$argCounter] == '--help') {
+        foreach ($argv as $argument) {
+            if ($argument == '--help') {
                 $this->showHelp();
-            } else if (preg_match('/--path=(.*)/', $argv[$argCounter], $matches)) {
+            } else if (preg_match('/--path=(.*)/', $argument, $matches)) {
                 $basePath = $matches[1];
             }
         }
