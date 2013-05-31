@@ -1,284 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a12" title="">
-  <file path="TestClass.php" hash="36cc8b674590d715736700ef5343b8ea" package="php-tricorder">
+  <file path="ReferenceClass.php" hash="7dcf7057719bdacc3daa6fa7eb05562c" package="php-tricorder">
     <docblock line="3">
       <description>Class to be used as a reference for testing purposes</description>
-      <long-description></long-description>
+      <long-description/>
       <tag line="3" name="package" description="php-tricorder"/>
       <tag line="3" name="author" description="Chris Hartjes"/>
     </docblock>
-    <class final="false" abstract="false" namespace="global" line="13" package="Default">
+    <class final="false" abstract="false" namespace="Tricorder\Fixtures" line="15" package="Default">
       <extends/>
       <name>ReferenceClass</name>
-      <full_name>\ReferenceClass</full_name>
-      <docblock line="10">
+      <full_name>\Tricorder\Fixtures\ReferenceClass</full_name>
+      <docblock line="12">
         <description>ReferenceClass</description>
-        <long-description></long-description>
+        <long-description/>
       </docblock>
-      <property final="false" static="false" visibility="protected" line="19" namespace="global" package="Default">
+      <property final="false" static="false" visibility="protected" line="21" namespace="Tricorder\Fixtures" package="Default">
         <name>$_db</name>
-        <default></default>
-        <docblock line="15">
+        <default/>
+        <docblock line="17">
           <description>Sample protected DB attribute</description>
-          <long-description></long-description>
-          <tag line="15" name="type" description="\PDO"/>
+          <long-description/>
+          <tag line="17" name="type" description="\PDO"/>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="26" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="28" package="Default">
         <name>returnBoolean</name>
         <full_name>returnBoolean</full_name>
-        <docblock line="21">
+        <docblock line="23">
           <description>Public method that accepts no parameter but returns boolean</description>
-          <long-description></long-description>
-          <tag line="21" name="return" description="" type="boolean">
+          <long-description/>
+          <tag line="23" name="return" description="" type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="37" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="39" package="Default">
         <name>returnBooleanCovered</name>
         <full_name>returnBooleanCovered</full_name>
-        <docblock line="31">
+        <docblock line="33">
           <description>Public method that accepts no parameter but returns boolean</description>
-          <long-description></long-description>
-          <tag line="31" name="return" description="" type="boolean">
+          <long-description/>
+          <tag line="33" name="return" description="" type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="31" name="tricorder" description="coversMethodReturnsBooleanValues testMethodReturnsBooleanValues"/>
+          <tag line="33" name="tricorder" description="coversMethodReturnsBooleanValues testMethodReturnsBooleanValues"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="47" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="49" package="Default">
         <name>acceptStringParam</name>
         <full_name>acceptStringParam</full_name>
-        <docblock line="42">
+        <docblock line="44">
           <description>Public method that accepts one parameter</description>
-          <long-description></long-description>
-          <tag line="42" name="param" description="" type="string" variable="$value">
+          <long-description/>
+          <tag line="44" name="param" description="" type="string" variable="$value">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="47">
+        <argument line="49">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="57" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="59" package="Default">
         <name>returnVoid</name>
         <full_name>returnVoid</full_name>
-        <docblock line="52">
+        <docblock line="54">
           <description>Public method returns nothing</description>
-          <long-description></long-description>
-          <tag line="52" name="return" description="" type="void">
+          <long-description/>
+          <tag line="54" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="67" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="69" package="Default">
         <name>acceptStringParamCovered</name>
         <full_name>acceptStringParamCovered</full_name>
-        <docblock line="61">
+        <docblock line="63">
           <description>Public method that accepts one string parameter</description>
-          <long-description></long-description>
-          <tag line="61" name="param" description="" type="string" variable="$value">
+          <long-description/>
+          <tag line="63" name="param" description="" type="string" variable="$value">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="61" name="tricorder" description="coversMethodAcceptsStringValues testMethodAcceptsStringValues"/>
+          <tag line="63" name="tricorder" description="coversMethodAcceptsStringValues testMethodAcceptsStringValues"/>
         </docblock>
-        <argument line="67">
+        <argument line="69">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="78" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="80" package="Default">
         <name>returnVoidCovered</name>
         <full_name>returnVoidCovered</full_name>
-        <docblock line="72">
+        <docblock line="74">
           <description>Public method returns nothing</description>
-          <long-description></long-description>
-          <tag line="72" name="return" description="" type="void">
+          <long-description/>
+          <tag line="74" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
-          <tag line="72" name="tricorder" description="coversMethodReturnsVoidValues testMethodReturnsVoidValues"/>
+          <tag line="74" name="tricorder" description="coversMethodReturnsVoidValues testMethodReturnsVoidValues"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="87" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="89" package="Default">
         <name>acceptIntegerParam</name>
         <full_name>acceptIntegerParam</full_name>
-        <docblock line="82">
+        <docblock line="84">
           <description>Public method that accepts integer</description>
-          <long-description></long-description>
-          <tag line="82" name="param" description="" type="integer" variable="$foo">
+          <long-description/>
+          <tag line="84" name="param" description="" type="integer" variable="$foo">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="87">
+        <argument line="89">
           <name>$foo</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="96" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="98" package="Default">
         <name>returnArray</name>
         <full_name>returnArray</full_name>
-        <docblock line="91">
+        <docblock line="93">
           <description>Public method returns an array</description>
-          <long-description></long-description>
-          <tag line="91" name="return" description="" type="array">
+          <long-description/>
+          <tag line="93" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="107" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="109" package="Default">
         <name>acceptIntegerParamCovered</name>
         <full_name>acceptIntegerParamCovered</full_name>
-        <docblock line="101">
+        <docblock line="103">
           <description>Public method that accepts one integer parameter</description>
-          <long-description></long-description>
-          <tag line="101" name="param" description="" type="integer" variable="$foo">
+          <long-description/>
+          <tag line="103" name="param" description="" type="integer" variable="$foo">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="101" name="tricorder" description="coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues"/>
+          <tag line="103" name="tricorder" description="coversMethodAcceptsIntegerValues testMethodAcceptsIntegerValues"/>
         </docblock>
-        <argument line="107">
+        <argument line="109">
           <name>$foo</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="117" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="119" package="Default">
         <name>returnArrayCovered</name>
         <full_name>returnArrayCovered</full_name>
-        <docblock line="111">
+        <docblock line="113">
           <description>Public method that returns an array</description>
-          <long-description></long-description>
-          <tag line="111" name="return" description="" type="array">
+          <long-description/>
+          <tag line="113" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="111" name="tricorder" description="coversMethodReturnsArrayValues testMethodReturnsArrayValues"/>
+          <tag line="113" name="tricorder" description="coversMethodReturnsArrayValues testMethodReturnsArrayValues"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="127" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="129" package="Default">
         <name>acceptGrumpyFoo</name>
         <full_name>acceptGrumpyFoo</full_name>
-        <docblock line="122">
+        <docblock line="124">
           <description>Public method that accepts a parameter of a specific type</description>
-          <long-description></long-description>
-          <tag line="122" name="param" description="" type="\Grumpy\Foo" variable="$foo">
+          <long-description/>
+          <tag line="124" name="param" description="" type="\Grumpy\Foo" variable="$foo">
             <type by_reference="false">\Grumpy\Foo</type>
           </tag>
         </docblock>
-        <argument line="127">
+        <argument line="129">
           <name>$foo</name>
-          <default></default>
+          <default/>
           <type>\Grumpy\Foo</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="136" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="138" package="Default">
         <name>returnInteger</name>
         <full_name>returnInteger</full_name>
-        <docblock line="131">
+        <docblock line="133">
           <description>Public method that returns an integer</description>
-          <long-description></long-description>
-          <tag line="131" name="return" description="" type="integer">
+          <long-description/>
+          <tag line="133" name="return" description="" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="146" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="148" package="Default">
         <name>acceptFloatParam</name>
         <full_name>acceptFloatParam</full_name>
-        <docblock line="141">
+        <docblock line="143">
           <description>Public method that accept float value</description>
-          <long-description></long-description>
-          <tag line="141" name="param" description="" type="float" variable="$value">
+          <long-description/>
+          <tag line="143" name="param" description="" type="float" variable="$value">
             <type by_reference="false">float</type>
           </tag>
         </docblock>
-        <argument line="146">
+        <argument line="148">
           <name>$value</name>
-          <default></default>
+          <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="153" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="155" package="Default">
         <name>createsDependency</name>
         <full_name>createsDependency</full_name>
-        <docblock line="150">
+        <docblock line="152">
           <description>Public method that instantiates a dependency inside it</description>
-          <long-description></long-description>
+          <long-description/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="164" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="166" package="Default">
         <name>passArgumentToObject</name>
         <full_name>passArgumentToObject</full_name>
-        <docblock line="158">
+        <docblock line="160">
           <description>Public method that depends on a method call with a value</description>
-          <long-description></long-description>
-          <tag line="158" name="todo" description=""/>
-          <tag line="158" name="param" description="" type="\Grumpy\Argument\Foo" variable="$foo">
-            <type by_reference="false">\Grumpy\Argument\Foo</type>
+          <long-description/>
+          <tag line="160" name="todo" description=""/>
+          <tag line="160" name="param" description="" type="\Tricorder\Fixtures\Grumpy\Argument\Foo" variable="$foo">
+            <type by_reference="false">\Tricorder\Fixtures\Grumpy\Argument\Foo</type>
           </tag>
         </docblock>
-        <argument line="164">
+        <argument line="166">
           <name>$foo</name>
-          <default></default>
+          <default/>
           <type>\Grumpy\Argument\Foo</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="177" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="179" package="Default">
         <name>returnValueFromObject</name>
         <full_name>returnValueFromObject</full_name>
-        <docblock line="169">
+        <docblock line="171">
           <description>Public method that returns the value from an object</description>
-          <long-description></long-description>
-          <tag line="169" name="todo" description=""/>
-          <tag line="169" name="param" description="" type="\Grumpy\Returns\Foo" variable="$foo">
-            <type by_reference="false">\Grumpy\Returns\Foo</type>
+          <long-description/>
+          <tag line="171" name="todo" description=""/>
+          <tag line="171" name="param" description="" type="\Tricorder\Fixtures\Grumpy\Returns\Foo" variable="$foo">
+            <type by_reference="false">\Tricorder\Fixtures\Grumpy\Returns\Foo</type>
           </tag>
-          <tag line="169" name="return" description="" type="integer">
+          <tag line="171" name="return" description="" type="integer">
             <type by_reference="false">integer</type>
           </tag>
         </docblock>
-        <argument line="177">
+        <argument line="179">
           <name>$foo</name>
-          <default></default>
+          <default/>
           <type>\Grumpy\Returns\Foo</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="185" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="187" package="Default">
         <name>usesStaticMethodCall</name>
         <full_name>usesStaticMethodCall</full_name>
-        <docblock line="182">
+        <docblock line="184">
           <description>Public method that does a static method call inside</description>
-          <long-description></long-description>
+          <long-description/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="195" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="Tricorder\Fixtures" line="197" package="Default">
         <name>returnSpecificObjectType</name>
         <full_name>returnSpecificObjectType</full_name>
-        <docblock line="190">
+        <docblock line="192">
           <description>Public method that returns a specific object type</description>
-          <long-description></long-description>
-          <tag line="190" name="return" description="" type="\Grumpy\Foo">
+          <long-description/>
+          <tag line="192" name="return" description="" type="\Grumpy\Foo">
             <type by_reference="false">\Grumpy\Foo</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="203" package="Default">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="Tricorder\Fixtures" line="205" package="Default">
         <name>_protectedMethod</name>
         <full_name>_protectedMethod</full_name>
-        <docblock line="200">
+        <docblock line="202">
           <description>Protected method are hard to test</description>
-          <long-description></long-description>
+          <long-description/>
         </docblock>
       </method>
     </class>
+    <parse_markers>
+      <error line="160" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $foo in passArgumentToObject()</error>
+      <error line="171" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $foo in returnValueFromObject()</error>
+    </parse_markers>
   </file>
   <package name="Default" full_name="Default"/>
   <package name="php-tricorder" full_name="php-tricorder"/>
-  <namespace name="global" full_name="global"/>
+  <namespace name="Tricorder" full_name="Tricorder">
+    <namespace name="Fixtures" full_name="Tricorder\Fixtures"/>
+  </namespace>
   <marker count="2">todo</marker>
   <marker count="0">fixme</marker>
   <deprecated count="0"/>
