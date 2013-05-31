@@ -11,31 +11,41 @@
  * @version 0.1
  */
 
-class TricorderTest extends \PHPUnit_Framework_TestCase
+namespace Tricorder\Tests;
+
+use Tricorder\Application;
+
+/**
+ * Class ApplicationTest
+ *
+ * @author  Yannick Voyer (http://github.com/yvoyer)
+ */
+class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * The output of the command
      *
      * @var string
      */
-    private static $output;
+    private $output;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
         // We need to call this only once
         $argv = array(
             '',
-            __DIR__ . '/structure.xml',
+            '--path=' . __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures',
+            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
         );
 
         ob_start();
-        include __DIR__ . "/../tricorder.php";
-        self::$output = ob_get_clean();
+        new Application($argv);
+        $this->output = ob_get_clean();
     }
 
     public function testShouldOutputTheScannedClass()
     {
-        $this->assertContains('Scanning ReferenceClass', self::$output);
+        $this->assertContains('Scanning ReferenceClass', $this->output);
     }
 
     /**
@@ -53,9 +63,10 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
             array('acceptGrumpyFoo -- mock $foo as \Grumpy\Foo'),
             array('returnInteger -- test method returns non-integer values'),
             array('acceptFloatParam -- mock $value as float'),
-            array('./TestClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes'),
-            array('./TestClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call'),
-            array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'), array('_protectedMethod -- non-public methods are difficult to test in isolation'),
+            array('/Fixtures/ReferenceClass.php -- \Grumpy\Dependency\Foo might need to be injected for testing purposes'),
+            array('/Fixtures/ReferenceClass.php -- \Grumpy\Foo might need to be injected for testing purposes due to static method call'),
+            array('returnSpecificObjectType -- test method returns \Grumpy\Foo instances'),
+            array('_protectedMethod -- non-public methods are difficult to test in isolation'),
         );
     }
 
@@ -68,7 +79,7 @@ class TricorderTest extends \PHPUnit_Framework_TestCase
      */
     public function checkForSpecificSuggestions($suggestion)
     {
-        $this->assertContains($suggestion, self::$output);
+        $this->assertContains($suggestion, $this->output);
     } 
 
     public function testShouldSuggestToTestTheProtectedAttributeForAnObjectType()
