@@ -1,0 +1,22 @@
+{
+    "name": "chartjes/tricorder",
+    "description": "description_text",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Chris Hartjes",
+            "email": "email@example.com"
+        },
+        {
+            "name": "Yannick Voyer",
+            "email": "yan.voyer@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": ["tests", ""]
+        }
+    },
+    "require": {
+    }
+}
