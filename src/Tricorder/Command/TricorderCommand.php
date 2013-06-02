@@ -36,19 +36,22 @@ class TricorderCommand extends Command
     public function configure()
     {
         $description = <<<DESCRIPTION
+        PHP-Tricoder - by Chris Hartjes
+DESCRIPTION;
+
+        $help = <<<HELP
 PHP-Tricoder - by Chris Hartjes
 PHP-Tricoder analyzes phpDocumentor output to provide
 suggestions on test scenarios and point out potential problems
-
-Usage: php tricoder.php [--help] [--path=</path/to/source>] </path/to/structure.xml>
-DESCRIPTION;
+HELP;
 
         $this
             ->setName('tricorder')
             ->setDescription($description)
+            ->setHelp($help)
             ->addArgument(
                 'file',
-                InputArgument::OPTIONAL,
+                InputArgument::REQUIRED,
                 'The xml structure file'
             )
             ->addOption(
