@@ -19,5 +19,6 @@
         }
     },
     "require": {
+        "symfony/console": "2.*"
     }
 }

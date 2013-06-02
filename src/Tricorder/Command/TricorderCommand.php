@@ -5,74 +5,101 @@
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
-namespace Tricorder;
+namespace Tricorder\Command;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Tricorder\Exception\InvalidArgumentException;
 
 /**
- * Class Application
+ * Class TricorderCommand
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Tricorder
  */
-class Application
+class TricorderCommand extends Command
 {
-    public function __construct($argv)
-    {
-        if (count($argv) == 0) {
-            $this->showHelp();
-        }
+    /**
+     * @var \Symfony\Component\Console\Output\OutputInterface
+     */
+    private $output;
 
-        $basePath = '.';
-        foreach ($argv as $argument) {
-            if ($argument == '--help') {
-                $this->showHelp();
-            } else if (preg_match('/--path=(.*)/', $argument, $matches)) {
-                $basePath = $matches[1];
-            }
-        }
+    public function configure()
+    {
+        $description = <<<DESCRIPTION
+PHP-Tricoder - by Chris Hartjes
+PHP-Tricoder analyzes phpDocumentor output to provide
+suggestions on test scenarios and point out potential problems
+
+Usage: php tricoder.php [--help] [--path=</path/to/source>] </path/to/structure.xml>
+DESCRIPTION;
+
+        $this
+            ->setName('tricorder')
+            ->setDescription($description)
+            ->addArgument(
+                'file',
+                InputArgument::OPTIONAL,
+                'The xml structure file'
+            )
+            ->addOption(
+                'path',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The path where to find the classes'
+            )
+        ;
+    }
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->output = $output;
+
+        $basePath = $input->getOption('path');
 
         // Let's see if we have an actual file
-        $structureFile = $argv[count($argv)-1];
+        $structureFile = $input->getArgument('file');
 
         if (!file_exists($structureFile)) {
-            echo "Could not find phpDocumenter file [{$structureFile}]" . PHP_EOL . PHP_EOL;
+            throw new InvalidArgumentException("Could not find phpDocumenter file [{$structureFile}]");
         }
 
         // Load in our structure and start iterating through it
-        echo "Reading in phpDocumentor structure file..." . PHP_EOL . PHP_EOL;
+        $this->outputMessage("Reading in phpDocumentor structure file...");
 
         // I hate suppressing error messages, but we are trapping the results later
         $structureData = @simplexml_load_file($structureFile);
 
         if (!$structureData) {
-            echo "{$structureFile} is not a properly formatted phpDocumentor structure";
-            echo " file, please verify it's contents" . PHP_EOL;
-            exit();
+            throw new InvalidArgumentException("{$structureFile} is not a properly formatted phpDocumentor structure file, please verify it's contents");
         }
 
         $files = $structureData->{'file'};
 
         if (!$files) {
-            echo "Could not find proper file information in {$structureFile}" . PHP_EOL;
+            throw new InvalidArgumentException("Could not find proper file information in {$structureFile}");
         }
 
         foreach ($files as $file) {
-            echo $file['path'] . PHP_EOL . PHP_EOL;
+            $this->outputMessage($file['path']);
             $this->scanClasses($file->class);
             $filePath = join(DIRECTORY_SEPARATOR, array($basePath, $file['path']));
             $this->dependencyCheck($filePath);
-            echo "\n";
         }
     }
 
-    private function showHelp()
+    /**
+     * Outputs a message
+     *
+     * @param $message The message to output
+     */
+    private function outputMessage($message)
     {
-        echo "PHP-Tricoder - by Chris Hartjes" . PHP_EOL . PHP_EOL;
-        echo "PHP-Tricoder analyzes phpDocumentor output to provide" . PHP_EOL;
-        echo "suggestions on test scenarios and point out potential" . PHP_EOL;
-        echo "problems" . PHP_EOL . PHP_EOL;
-        echo "Usage: php tricoder.php [--help] [--path=</path/to/source>] </path/to/structure.xml>" . PHP_EOL . PHP_EOL;;
-        exit();
+        $this->output->writeln($message);
     }
 
     /**
@@ -97,7 +124,7 @@ class Application
                 } else {
                     $dependencyFlag = false;
                     $dependencyName = trim($dependencyName);
-                    echo "{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes\n";
+                    $this->outputMessage("{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes");
                 }
             }
 
@@ -120,7 +147,7 @@ class Application
                 }
 
                 $dependencyName = trim($dependencyName);
-                echo "{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes due to static method call\n";
+                $this->outputMessage("{$pathToFile} -- {$dependencyName} might need to be injected for testing purposes due to static method call");
             }
         }
     }
@@ -133,7 +160,7 @@ class Application
     private function scanClasses($classXml)
     {
         foreach ($classXml as $classInfo) {
-            echo "Scanning " . $classInfo->{'name'} . PHP_EOL . PHP_EOL;
+            $this->outputMessage("Scanning " . $classInfo->{'name'});
             $this->scanMethods($classInfo->method);
         }
     }
@@ -190,11 +217,9 @@ class Application
                 $tricorderTags
             );
 
-            echo ($methodHasSuggestions == false
-                && $argsHaveSuggestions == false
-                && $returnTypeHasSuggestions == false)
-                ? ''
-                : PHP_EOL;
+            if ($methodHasSuggestions || $argsHaveSuggestions || $returnTypeHasSuggestions) {
+                $this->outputMessage('');
+            }
         }
     }
 
@@ -213,7 +238,7 @@ class Application
         // If a method is protected, flag it as hard-to-test
         if ($visibility !== 'public') {
             $methodIsVisible = true;
-            echo "{$methodName} -- non-public methods are difficult to test in isolation" . PHP_EOL;
+            $this->outputMessage("{$methodName} -- non-public methods are difficult to test in isolation");
         }
 
         return $methodIsVisible;
@@ -311,7 +336,7 @@ class Application
                 break;
         }
 
-        echo "{$methodName} -- {$msg}" . PHP_EOL;
+        $this->outputMessage("{$methodName} -- {$msg}");
 
         return $argHasSuggestions;
     }
@@ -376,6 +401,6 @@ class Application
                 break;
         }
 
-        echo "{$methodName} -- {$msg}" . PHP_EOL;
+        $this->outputMessage("{$methodName} -- {$msg}");
     }
 }

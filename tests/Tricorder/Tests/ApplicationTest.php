@@ -13,7 +13,9 @@
 
 namespace Tricorder\Tests;
 
-use Tricorder\Application;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Console\Application;
+use Tricorder\Command\TricorderCommand;
 
 /**
  * Class ApplicationTest
@@ -31,16 +33,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $application = new Application();
+        $application->add(new TricorderCommand());
+        $command = $application->find('tricorder');
+
         // We need to call this only once
         $argv = array(
-            '',
-            '--path=' . __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
+            'command' => $command->getName(),
+            '--path'  => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures',
+            'file'    => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
         );
 
-        ob_start();
-        new Application($argv);
-        $this->output = ob_get_clean();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute($argv);
+        $this->output = $commandTester->getDisplay();
     }
 
     public function testShouldOutputTheScannedClass()
