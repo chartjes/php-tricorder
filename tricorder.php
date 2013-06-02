@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * PHP-Tricorder
@@ -7,13 +8,20 @@
  * the classes and methods present in the structure file
  *
  * @author Chris Hartjes
+ * @author Yannick Voyer
  * @version 0.1
  */
 
-require_once 'vendor/autoload.php';
+require_once 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-use Tricorder\Application;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Tricorder\Command\TricorderCommand;
 
-array_shift($argv);
+// Restructure the arguments to force the tricorder command by default
+unset($argv[0]);
+$argv = array_merge(array('I am getting ignored, I should stay there', 'tricorder'), $argv);
 
-new Application($argv);
+$application = new Application('tricoder', '0.1');
+$application->add(new TricorderCommand());
+$application->run(new ArgvInput($argv));

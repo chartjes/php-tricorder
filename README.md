@@ -6,7 +6,7 @@ PHP-Tricorder is a CLI utility that scans structure files created using [phpDocu
 and offers suggestions on potential problems with your code along with testing
 strategy information.
 
-Executing '/path/to/php tricorder.php' will give you some usage information.
+Executing `/path/to/php tricorder.php` will give you some usage information.
 
 Please read the file LICENSE included with this code for licensing details.
 
@@ -15,9 +15,10 @@ How To Use It
 
 * Install [phpDocumentor](http://phpdoc.org) using your preferred method
 * Use docblocks to describe the parameters and return types for your methods
-* To generate a structure.xml document for an entire directory recursively, use 'phpdoc parse -d . -t'
-* To generate a structure.xml document for a specific file, use 'phpdoc parse -f /path/to.file -t'
-* Process the structure.xml document using tricorder: '/path/to/php tricorder.php /path/to/structure.xml'
+* To generate a structure.xml document for an entire directory recursively, use `phpdoc parse -d . -t`
+* To generate a structure.xml document for a specific file, use `phpdoc parse -f /path/to.file -t`
+* Install the dependencies using [Composer](http://getcomposer.org/) `/path/to/php composer.phar install`
+* Process the structure.xml document using tricorder: `/path/to/php tricorder.php /path/to/structure.xml`
 
 Tricorder will then give you some suggestions on things to look for when testing
 your classes. Here's some sample output:
