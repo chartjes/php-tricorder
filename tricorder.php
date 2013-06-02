@@ -8,6 +8,7 @@
  * the classes and methods present in the structure file
  *
  * @author Chris Hartjes
+ * @author Yannick Voyer
  * @version 0.1
  */
 
