@@ -36,12 +36,12 @@ class TricorderCommand extends Command
     public function configure()
     {
         $description = <<<DESCRIPTION
-        PHP-Tricoder - by Chris Hartjes
+        PHP-Tricorder - by Chris Hartjes
 DESCRIPTION;
 
         $help = <<<HELP
-PHP-Tricoder - by Chris Hartjes
-PHP-Tricoder analyzes phpDocumentor output to provide
+PHP-Tricorder - by Chris Hartjes
+PHP-Tricorder analyzes phpDocumentor output to provide
 suggestions on test scenarios and point out potential problems
 HELP;
 

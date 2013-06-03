@@ -22,6 +22,6 @@ use Tricorder\Command\TricorderCommand;
 unset($argv[0]);
 $argv = array_merge(array('I am getting ignored, I should stay there', 'tricorder'), $argv);
 
-$application = new Application('tricoder', '0.1');
+$application = new Application('tricorder', '0.1');
 $application->add(new TricorderCommand());
 $application->run(new ArgvInput($argv));
