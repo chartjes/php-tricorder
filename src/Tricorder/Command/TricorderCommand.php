@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tricorder\Exception\InvalidArgumentException;
+use Tricorder\Formatter\ReturnTypeFormatter;
 use Tricorder\Formatter\VariableFormatter;
 
 /**
@@ -349,25 +350,8 @@ HELP;
             return false;
         }
 
-        switch ($tagType) {
-            case 'mixed':
-                $msg = "test method returns all potential values";
-                break;
-            case 'bool':
-            case 'boolean':
-                $msg = "test method returns boolean values";
-                break;
-            case 'int':
-            case 'integer':
-                $msg = "test method returns non-integer values";
-                break;
-            case 'string':
-                $msg = "test method returns expected string values";
-                break;
-            default:
-                $msg = "test method returns {$tagType} instances";
-                break;
-        }
+        $formatter = new ReturnTypeFormatter($tagType, $methodName);
+        $msg = $formatter->getMessage();
 
         $this->outputMessage("{$methodName} -- {$msg}");
     }
