@@ -18,7 +18,11 @@
             "": ["tests"]
         }
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "require": {
+        "phpdocumentor/phpdocumentor": "2.0.*",
         "symfony/console": "2.*"
     }
 }
