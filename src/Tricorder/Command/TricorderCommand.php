@@ -278,14 +278,6 @@ HELP;
      */
     private function processArgumentType($methodName, $tag, $tricorderTags)
     {
-        // @todo Variable not used in scope
-        $acceptedTypes = array(
-            'array',
-            'string',
-            'integer'
-        );
-
-        $argHasSuggestions = false;
         $varName = $tag['@attributes']['variable'] ?: null;
         $tagType = $tag['type'];
 
@@ -306,41 +298,43 @@ HELP;
 
         switch ($tagType) {
             case 'array':
-                if (in_array('array', $coverage)) return false;
+                if (in_array('array', $coverage)) {
+                    return false;
+                }
                 $msg = "test {$varName} using an empty array()";
-                $argHasSuggestions = true;
                 break;
             case 'bool':
             case 'boolean':
-                if (in_array('bool', $coverage) || in_array('boolean', $coverage)) return false;
+                if (in_array('bool', $coverage) || in_array('boolean', $coverage)) {
+                    return false;
+                }
                 $msg = "test {$varName} using both true and false";
-                $argHasSuggestions = true;
                 break;
             case 'int':
             case 'integer':
-                if (in_array('int', $coverage) || in_array('integer', $coverage)) return false;
+                if (in_array('int', $coverage) || in_array('integer', $coverage)) {
+                    return false;
+                }
                 $msg = "test {$varName} using non-integer values";
-                $argHasSuggestions = true;
                 break;
             case 'mixed':
                 $msg = "test {$varName} using all potential values";
-                $argHasSuggestions = true;
                 break;
             case 'string':
-                if (in_array('string', $coverage)) return false;
+                if (in_array('string', $coverage)) {
+                    return false;
+                }
                 $msg = "test {$varName} using null or empty strings";
-                $argHasSuggestions = true;
                 break;
             case 'object':
             default:
                 $msg = "mock {$varName} as {$tagType}";
-                $argHasSuggestions = true;
                 break;
         }
 
         $this->outputMessage("{$methodName} -- {$msg}");
 
-        return $argHasSuggestions;
+        return true;
     }
 
     /**
