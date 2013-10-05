@@ -13,6 +13,7 @@ use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Processor\ArgumentProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
 use Tricorder\Tag\Extractor\MethodTagExtractor;
+use Tricorder\Tag\Extractor\ParamTagExtractor;
 
 /**
  * Class MethodScanner
@@ -47,8 +48,8 @@ class MethodScanner implements Scanner
         $this->output = $output;
         $this->method = $method;
 
-        $extractor    = new MethodTagExtractor();
-        $this->tags   = $extractor->extractTags($method);
+        $extractor    = new MethodTagExtractor($method);
+        $this->tags   = $extractor->extractTags();
     }
 
     /**
@@ -62,12 +63,8 @@ class MethodScanner implements Scanner
                 }
             });
 
-        // Check to see if we have any parameters that we need to test
-        $paramTags = array_filter($this->tags, function($tag) {
-                if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'param') {
-                    return true;
-                }
-            });
+        $paramExtractor = new ParamTagExtractor($this->tags);
+        $paramTags = $paramExtractor->extractTags();
 
         // Grab our method return information
         $returnTag = array_filter($this->tags, function($tag) {

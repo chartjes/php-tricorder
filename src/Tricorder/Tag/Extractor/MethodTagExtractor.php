@@ -18,20 +18,31 @@ use SimpleXMLElement;
  *
  * @package Tricorder\Tag\Extractor
  */
-class MethodTagExtractor
+class MethodTagExtractor implements Extractor
 {
     /**
-     * Extract the tags from the $method.
-     *
+     * @var SimpleXMLElement
+     */
+    private $method;
+
+    /**
      * @param SimpleXMLElement $method
+     */
+    public function __construct(SimpleXMLElement $method)
+    {
+        $this->method = $method;
+    }
+
+    /**
+     * Extract the tags.
      *
      * @return array
      */
-    public function extractTags(SimpleXMLElement $method)
+    public function extractTags()
     {
         // Convert our tag information into an array for easy manipulation
         $methodTags = array();
-        foreach ($method->docblock->tag as $tag) {
+        foreach ($this->method->docblock->tag as $tag) {
             array_push($methodTags, json_decode(json_encode((array)$tag), 1));
         }
 
