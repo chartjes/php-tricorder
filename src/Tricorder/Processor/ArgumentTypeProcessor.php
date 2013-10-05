@@ -17,7 +17,7 @@ use Tricorder\Formatter\VariableFormatter;
  *
  * @package Tricorder\Processor
  */
-class ArgumentTypeProcessor
+class ArgumentTypeProcessor implements Processor
 {
     /**
      * @var OutputInterface
@@ -30,13 +30,13 @@ class ArgumentTypeProcessor
     }
 
     /**
-     * Look at the argument type and react accordingly
+     * Look at the tags and react accordingly
      *
      * @param string $methodName
      * @param array  $tag
      * @param array  $tricorderTags
      */
-    public function processArgumentType($methodName, array $tag, array $tricorderTags)
+    public function process($methodName, array $tag, array $tricorderTags)
     {
         $varName = $tag['@attributes']['variable'] ?: null;
         $tagType = $tag['type'];

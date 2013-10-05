@@ -20,8 +20,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
-use Tricorder\Formatter\ReturnTypeFormatter;
-use Tricorder\Formatter\VariableFormatter;
 use Tricorder\Processor\ArgumentTypeProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
 
@@ -201,11 +199,7 @@ HELP;
                     }
                 });
 
-            $this->scanArguments(
-                (string)$method->name,
-                $paramTags,
-                $tricorderTags
-            );
+            $this->scanArguments((string)$method->name, $paramTags, $tricorderTags);
 
             // Grab our method return information
             $returnTag = array_filter($methodTags, function($tag) {
@@ -216,11 +210,7 @@ HELP;
 
             // Process ReturnType
             $processor = new ReturnTypeProcessor($this->output);
-            $processor->process(
-                (string)$method->name,
-                $returnTag,
-                $tricorderTags
-            );
+            $processor->process((string)$method->name, $returnTag, $tricorderTags);
 
             $methodFormatter = new MethodFormatter($method);
             $methodFormatter->outputMessage($this->output);
@@ -239,7 +229,7 @@ HELP;
     {
         $processor = new ArgumentTypeProcessor($this->output);
         foreach ($tags as $tag) {
-            $processor->processArgumentType($methodName, $tag, $tricorderTags);
+            $processor->process($methodName, $tag, $tricorderTags);
         }
     }
 }

@@ -17,7 +17,7 @@ use Tricorder\Formatter\ReturnTypeFormatter;
  *
  * @package Tricorder\Processor
  */
-class ReturnTypeProcessor
+class ReturnTypeProcessor implements Processor
 {
     /**
      * @var OutputInterface
@@ -33,7 +33,7 @@ class ReturnTypeProcessor
     }
 
     /**
-     * Look at the return type and react accordingly
+     * Look at the $tags and react accordingly
      *
      * @param string $methodName
      * @param array  $tag
