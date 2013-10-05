@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the tricorder.local.
+ * This file is part of the php-tricorder project.
  * 
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
