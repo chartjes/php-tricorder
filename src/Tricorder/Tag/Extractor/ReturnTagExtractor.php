@@ -8,13 +8,13 @@
 namespace Tricorder\Tag\Extractor;
 
 /**
- * Class ParamTagExtractor
+ * Class ReturnTagExtractor
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Tricorder\Tag\Extractor
  */
-class ParamTagExtractor implements Extractor
+class ReturnTagExtractor implements Extractor
 {
     /**
      * @var array
@@ -37,12 +37,12 @@ class ParamTagExtractor implements Extractor
     public function extractTags()
     {
         $closure = function($tag) {
-            if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'param') {
+            if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'return') {
                 return true;
             }
         };
 
-        // Check to see if we have any parameters that we need to test
+        // Grab our method return information
         return array_filter($this->tags, $closure);
     }
 }
