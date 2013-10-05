@@ -22,6 +22,7 @@ use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Formatter\ReturnTypeFormatter;
 use Tricorder\Formatter\VariableFormatter;
+use Tricorder\Processor\ArgumentTypeProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
 
 /**
@@ -214,13 +215,12 @@ HELP;
                 });
 
             // Process ReturnType
-            $processor = new ReturnTypeProcessor();
+            $processor = new ReturnTypeProcessor($this->output);
             $processor->process(
                 (string)$method->name,
                 $returnTag,
                 $tricorderTags
             );
-            $processor->outputMessage($this->output);
 
             $methodFormatter = new MethodFormatter($method);
             $methodFormatter->outputMessage($this->output);
@@ -237,42 +237,9 @@ HELP;
      */
     private function scanArguments($methodName, array $tags, array $tricorderTags)
     {
+        $processor = new ArgumentTypeProcessor($this->output);
         foreach ($tags as $tag) {
-            $this->processArgumentType($methodName, $tag, $tricorderTags);
-        }
-    }
-
-    /**
-     * Look at the argument type and react accordingly
-     *
-     * @param string $methodName
-     * @param array  $tag
-     * @param array  $tricorderTags
-     */
-    private function processArgumentType($methodName, array $tag, array $tricorderTags)
-    {
-        $varName = $tag['@attributes']['variable'] ?: null;
-        $tagType = $tag['type'];
-
-        $coverage = array();
-        foreach ($tricorderTags as $tag) {
-            if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodAccepts(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
-                array_push($coverage, strtolower($matches[1]));
-            }
-        }
-
-        /**
-         * Sometimes people send us param types like bool|string, so we need to
-         * search for those and convert them to 'mixed'
-         */
-        if (stristr('|', $tagType) === true) {
-            $tagType = 'mixed';
-        }
-
-        // If tag is already in coverage, do not process it
-        if (false === in_array($tagType, $coverage)) {
-            $formatter = new VariableFormatter($tagType, $varName, $methodName);
-            $formatter->outputMessage($this->output);
+            $processor->processArgumentType($methodName, $tag, $tricorderTags);
         }
     }
 }

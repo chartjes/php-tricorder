@@ -8,8 +8,6 @@
 namespace Tricorder\Processor;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Tricorder\Formatter\Formatter;
-use Tricorder\Formatter\NullFormatter;
 use Tricorder\Formatter\ReturnTypeFormatter;
 
 /**
@@ -19,16 +17,19 @@ use Tricorder\Formatter\ReturnTypeFormatter;
  *
  * @package Tricorder\Processor
  */
-class ReturnTypeProcessor implements Formatter
+class ReturnTypeProcessor
 {
     /**
-     * @var Formatter
+     * @var OutputInterface
      */
-    private $formatter;
+    private $output;
 
-    public function __construct()
+    /**
+     * @param OutputInterface $output
+     */
+    public function __construct(OutputInterface $output)
     {
-        $this->formatter = new NullFormatter();
+        $this->output = $output;
     }
 
     /**
@@ -62,18 +63,9 @@ class ReturnTypeProcessor implements Formatter
 
             // Make sure to not bother with this if we already ran into this
             if (false === in_array($tagType, $coverage)) {
-                $this->formatter = new ReturnTypeFormatter($tagType, $methodName);
+                $formatter = new ReturnTypeFormatter($tagType, $methodName);
+                $formatter->outputMessage($this->output);
             }
         }
-    }
-
-    /**
-     * Output the suggestion.
-     *
-     * @param OutputInterface $output
-     */
-    public function outputMessage(OutputInterface $output)
-    {
-        $this->formatter->outputMessage($output);
     }
 }

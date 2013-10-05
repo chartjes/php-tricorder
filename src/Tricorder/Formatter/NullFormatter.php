@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the tricorder.local.
- * 
+ *
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
@@ -15,6 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Tricorder\Formatter
+ *
+ * @deprecated Never used --- @todo Remove
  */
 class NullFormatter implements Formatter
 {
