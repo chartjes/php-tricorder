@@ -7,6 +7,8 @@
 
 namespace Tricorder\Formatter;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Class VariableFormatter
  *
@@ -14,7 +16,7 @@ namespace Tricorder\Formatter;
  *
  * @package Tricorder\Formater
  */
-class VariableFormatter
+class VariableFormatter implements Formatter
 {
     /**
      * @var string
@@ -27,21 +29,28 @@ class VariableFormatter
     private $varName;
 
     /**
+     * @var string
+     */
+    private $methodName;
+
+    /**
      * @param string $tagType
      * @param string $varName
+     * @param string $methodName
      */
-    public function __construct($tagType, $varName)
+    public function __construct($tagType, $varName, $methodName)
     {
-        $this->tagType = $tagType;
-        $this->varName = $varName;
+        $this->tagType    = $tagType;
+        $this->varName    = $varName;
+        $this->methodName = $methodName;
     }
 
     /**
-     * Returns the suggested message on what to test for a variable type.
+     * Output the suggestion.
      *
-     * @return string
+     * @param OutputInterface  $output
      */
-    public function getMessage()
+    public function outputMessage(OutputInterface $output)
     {
         switch ($this->tagType) {
             case 'array':
@@ -67,6 +76,6 @@ class VariableFormatter
                 break;
         }
 
-        return $msg;
+        $output->writeln("{$this->methodName} -- {$msg}");
     }
 }

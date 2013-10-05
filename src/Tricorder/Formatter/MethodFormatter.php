@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Tricorder\Formatter
  */
-class MethodFormatter
+class MethodFormatter implements Formatter
 {
     /**
      * @var SimpleXMLElement

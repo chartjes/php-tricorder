@@ -7,6 +7,8 @@
 
 namespace Tricorder\Formatter;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 /**
  * Class ReturnTypeFormatter
  *
@@ -16,7 +18,7 @@ namespace Tricorder\Formatter;
  *
  * @package Tricorder\Formatter
  */
-class ReturnTypeFormatter
+class ReturnTypeFormatter implements Formatter
 {
     /**
      * @var string
@@ -24,19 +26,26 @@ class ReturnTypeFormatter
     private $tagType;
 
     /**
-     * @param string $tagType
+     * @var string
      */
-    public function __construct($tagType)
+    private $methodName;
+
+    /**
+     * @param string $tagType
+     * @param string $methodName
+     */
+    public function __construct($tagType, $methodName)
     {
-        $this->tagType = $tagType;
+        $this->tagType    = $tagType;
+        $this->methodName = $methodName;
     }
 
     /**
-     * Returns the message.
+     * Output the suggestion.
      *
-     * @return string
+     * @param OutputInterface $output
      */
-    public function getMessage()
+    public function outputMessage(OutputInterface $output)
     {
         switch ($this->tagType) {
             case 'mixed':
@@ -58,6 +67,6 @@ class ReturnTypeFormatter
                 break;
         }
 
-        return $msg;
+        $output->writeln("{$this->methodName} -- {$msg}");
     }
 }

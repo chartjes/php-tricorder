@@ -257,7 +257,6 @@ HELP;
     {
         $varName = $tag['@attributes']['variable'] ?: null;
         $tagType = $tag['type'];
-        $formatter = new VariableFormatter($tagType, $varName);
 
         $coverage = array();
         foreach ($tricorderTags as $tag) {
@@ -279,8 +278,8 @@ HELP;
             return false;
         }
 
-        $msg = $formatter->getMessage();
-        $this->outputMessage("{$methodName} -- {$msg}");
+        $formatter = new VariableFormatter($tagType, $varName, $methodName);
+        $formatter->outputMessage($this->output);
 
         return true;
     }
@@ -326,8 +325,6 @@ HELP;
         }
 
         $formatter = new ReturnTypeFormatter($tagType, $methodName);
-        $msg = $formatter->getMessage();
-
-        $this->outputMessage("{$methodName} -- {$msg}");
+        $formatter->outputMessage($this->output);
     }
 }
