@@ -22,6 +22,7 @@ use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Formatter\ReturnTypeFormatter;
 use Tricorder\Formatter\VariableFormatter;
+use Tricorder\Processor\ReturnTypeProcessor;
 
 /**
  * Class TricorderCommand
@@ -212,11 +213,14 @@ HELP;
                     }
                 });
 
-            $this->processReturnType(
+            // Process ReturnType
+            $processor = new ReturnTypeProcessor();
+            $processor->process(
                 (string)$method->name,
                 $returnTag,
                 $tricorderTags
             );
+            $processor->outputMessage($this->output);
 
             $methodFormatter = new MethodFormatter($method);
             $methodFormatter->outputMessage($this->output);
@@ -231,7 +235,7 @@ HELP;
      * @param array  $tags
      * @param array  $tricorderTags
      */
-    private function scanArguments($methodName, $tags, $tricorderTags)
+    private function scanArguments($methodName, array $tags, array $tricorderTags)
     {
         foreach ($tags as $tag) {
             $this->processArgumentType($methodName, $tag, $tricorderTags);
@@ -245,7 +249,7 @@ HELP;
      * @param array  $tag
      * @param array  $tricorderTags
      */
-    private function processArgumentType($methodName, $tag, $tricorderTags)
+    private function processArgumentType($methodName, array $tag, array $tricorderTags)
     {
         $varName = $tag['@attributes']['variable'] ?: null;
         $tagType = $tag['type'];
@@ -269,43 +273,6 @@ HELP;
         if (false === in_array($tagType, $coverage)) {
             $formatter = new VariableFormatter($tagType, $varName, $methodName);
             $formatter->outputMessage($this->output);
-        }
-    }
-
-    /**
-     * Look at the return type and react accordingly
-     *
-     * @param string $methodName
-     * @param array  $tag
-     * @param array  $tricorderTags
-     */
-    private function processReturnType($methodName, array $tag, array $tricorderTags)
-    {
-        // Flatten the array a bit so we can check for attributes
-        $tagInfo = array_shift($tag);
-        if ($tagInfo !== null) {
-            $tagType = $tagInfo['type'];
-            $coverage = array();
-
-            foreach ($tricorderTags as $tag) {
-                if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodReturns(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
-                    array_push($coverage, strtolower($matches[1]));
-                }
-            }
-
-            /**
-             * Sometimes people send us return types like bool|string, so we need to
-             * search for those and convert them to 'mixed'
-             */
-            if (stristr('|', $tagType) === true) {
-                $tagType = 'mixed';
-            }
-
-            // Make sure to not bother with this if we already ran into this
-            if (false === in_array($tagType, $coverage)) {
-                $formatter = new ReturnTypeFormatter($tagType, $methodName);
-                $formatter->outputMessage($this->output);
-            }
         }
     }
 }
