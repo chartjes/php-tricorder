@@ -35,32 +35,26 @@ class TricorderCommand extends Command
 
     public function configure()
     {
-        $description = <<<DESCRIPTION
-        PHP-Tricorder - by Chris Hartjes
-DESCRIPTION;
-
         $help = <<<HELP
 PHP-Tricorder - by Chris Hartjes
 PHP-Tricorder analyzes phpDocumentor output to provide
 suggestions on test scenarios and point out potential problems
 HELP;
 
-        $this
-            ->setName('tricorder')
-            ->setDescription($description)
-            ->setHelp($help)
-            ->addArgument(
-                'file',
-                InputArgument::REQUIRED,
-                'The xml structure file'
-            )
-            ->addOption(
-                'path',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'The path where to find the classes'
-            )
-        ;
+        $this->setName('tricorder');
+        $this->setDescription('PHP-Tricorder - by Chris Hartjes');
+        $this->setHelp($help);
+        $this->addArgument(
+            'file',
+            InputArgument::REQUIRED,
+            'The xml structure file'
+        );
+        $this->addOption(
+            'path',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'The path where to find the classes'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
