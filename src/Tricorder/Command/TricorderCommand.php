@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tricorder\Exception\InvalidArgumentException;
+use Tricorder\Formatter\VariableFormatter;
 
 /**
  * Class TricorderCommand
@@ -280,6 +281,7 @@ HELP;
     {
         $varName = $tag['@attributes']['variable'] ?: null;
         $tagType = $tag['type'];
+        $formatter = new VariableFormatter($tagType, $varName);
 
         $coverage = array();
         foreach ($tricorderTags as $tag) {
@@ -301,30 +303,7 @@ HELP;
             return false;
         }
 
-        switch ($tagType) {
-            case 'array':
-                $msg = "test {$varName} using an empty array()";
-                break;
-            case 'bool':
-            case 'boolean':
-                $msg = "test {$varName} using both true and false";
-                break;
-            case 'int':
-            case 'integer':
-                $msg = "test {$varName} using non-integer values";
-                break;
-            case 'mixed':
-                $msg = "test {$varName} using all potential values";
-                break;
-            case 'string':
-                $msg = "test {$varName} using null or empty strings";
-                break;
-            case 'object':
-            default:
-                $msg = "mock {$varName} as {$tagType}";
-                break;
-        }
-
+        $msg = $formatter->getMessage();
         $this->outputMessage("{$methodName} -- {$msg}");
 
         return true;
