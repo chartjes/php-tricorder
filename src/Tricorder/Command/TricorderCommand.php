@@ -22,6 +22,8 @@ use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Processor\ArgumentTypeProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
+use Tricorder\Tag\Extractor\MethodTagExtractor;
+use Tricorder\Tag\Extractor\TricorderTagExtractor;
 
 /**
  * Class TricorderCommand
@@ -179,12 +181,9 @@ HELP;
      */
     private function scanMethods(SimpleXMLElement $methods)
     {
+        $tricorderTagExtractor = new MethodTagExtractor();
         foreach ($methods as $method) {
-            // Convert our tag information into an array for easy manipulation
-            $methodTags = array();
-            foreach ($method->docblock->tag as $tag) {
-                array_push($methodTags, json_decode(json_encode((array)$tag), 1));
-            }
+            $methodTags = $tricorderTagExtractor->extractTags($method);
 
             $tricorderTags = array_filter($methodTags, function($tag) {
                     if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'tricorder') {
@@ -199,14 +198,14 @@ HELP;
                     }
                 });
 
-            $this->scanArguments((string)$method->name, $paramTags, $tricorderTags);
-
             // Grab our method return information
             $returnTag = array_filter($methodTags, function($tag) {
                     if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'return') {
                         return true;
                     }
                 });
+
+            $this->scanArguments((string)$method->name, $paramTags, $tricorderTags);
 
             // Process ReturnType
             $processor = new ReturnTypeProcessor($this->output);
