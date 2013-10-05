@@ -22,6 +22,7 @@ use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Processor\ArgumentProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
+use Tricorder\Scanner\ClassScanner;
 use Tricorder\Scanner\MethodScanner;
 use Tricorder\Tag\Extractor\MethodTagExtractor;
 
@@ -161,29 +162,15 @@ HELP;
     }
 
     /**
-     * Scan our classes to look for methods
+     * Scan our $classes to look for methods.
      *
-     * @param SimpleXMLElement $classXml
+     * @param SimpleXMLElement $classes
      */
-    private function scanClasses(SimpleXMLElement $classXml)
+    private function scanClasses(SimpleXMLElement $classes)
     {
-        foreach ($classXml as $classInfo) {
-            $this->outputMessage("Scanning " . $classInfo->{'name'});
-            $this->scanMethods($classInfo->method);
-        }
-    }
-
-    /**
-     * Scan through our methods and find out if we have any parameters that we
-     * need to check for type
-     *
-     * @param SimpleXMLElement $methods
-     */
-    private function scanMethods(SimpleXMLElement $methods)
-    {
-        $methodScanner = new MethodScanner($this->output);
-        foreach ($methods as $method) {
-            $methodScanner->scan($method);
+        $classScanner = new ClassScanner($this->output);
+        foreach ($classes as $class) {
+            $classScanner->scan($class);
         }
     }
 }
