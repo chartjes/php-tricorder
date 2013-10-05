@@ -296,34 +296,27 @@ HELP;
             $tagType = 'mixed';
         }
 
+        // If tag is already in coverage, do not process it
+        if (in_array($tagType, $coverage)) {
+            return false;
+        }
+
         switch ($tagType) {
             case 'array':
-                if (in_array('array', $coverage)) {
-                    return false;
-                }
                 $msg = "test {$varName} using an empty array()";
                 break;
             case 'bool':
             case 'boolean':
-                if (in_array('bool', $coverage) || in_array('boolean', $coverage)) {
-                    return false;
-                }
                 $msg = "test {$varName} using both true and false";
                 break;
             case 'int':
             case 'integer':
-                if (in_array('int', $coverage) || in_array('integer', $coverage)) {
-                    return false;
-                }
                 $msg = "test {$varName} using non-integer values";
                 break;
             case 'mixed':
                 $msg = "test {$varName} using all potential values";
                 break;
             case 'string':
-                if (in_array('string', $coverage)) {
-                    return false;
-                }
                 $msg = "test {$varName} using null or empty strings";
                 break;
             case 'object':
