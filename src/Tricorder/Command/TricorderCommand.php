@@ -199,7 +199,7 @@ HELP;
                     }
                 });
 
-            $argsHaveSuggestions = $this->scanArguments(
+            $this->scanArguments(
                 (string)$method->name,
                 $paramTags,
                 $tricorderTags
@@ -212,7 +212,7 @@ HELP;
                     }
                 });
 
-            $returnTypeHasSuggestions = $this->processReturnType(
+            $this->processReturnType(
                 (string)$method->name,
                 $returnTag,
                 $tricorderTags
@@ -230,18 +230,12 @@ HELP;
      * @param string $methodName
      * @param array  $tags
      * @param array  $tricorderTags
-     *
-     * @return boolean
      */
     private function scanArguments($methodName, $tags, $tricorderTags)
     {
-        $argumentsHaveSuggestions = array();
-
         foreach ($tags as $tag) {
-            $argumentsHaveSuggestions[] = $this->processArgumentType($methodName, $tag, $tricorderTags);
+            $this->processArgumentType($methodName, $tag, $tricorderTags);
         }
-
-        return in_array(true, $argumentsHaveSuggestions);
     }
 
     /**
@@ -250,8 +244,6 @@ HELP;
      * @param string $methodName
      * @param array  $tag
      * @param array  $tricorderTags
-     *
-     * @return boolean
      */
     private function processArgumentType($methodName, $tag, $tricorderTags)
     {
@@ -274,14 +266,10 @@ HELP;
         }
 
         // If tag is already in coverage, do not process it
-        if (in_array($tagType, $coverage)) {
-            return false;
+        if (false === in_array($tagType, $coverage)) {
+            $formatter = new VariableFormatter($tagType, $varName, $methodName);
+            $formatter->outputMessage($this->output);
         }
-
-        $formatter = new VariableFormatter($tagType, $varName, $methodName);
-        $formatter->outputMessage($this->output);
-
-        return true;
     }
 
     /**
@@ -290,41 +278,34 @@ HELP;
      * @param string $methodName
      * @param array  $tag
      * @param array  $tricorderTags
-     *
-     * @return boolean
      */
-    private function processReturnType($methodName, $tag, $tricorderTags)
+    private function processReturnType($methodName, array $tag, array $tricorderTags)
     {
         // Flatten the array a bit so we can check for attributes
         $tagInfo = array_shift($tag);
+        if ($tagInfo !== null) {
+            $tagType = $tagInfo['type'];
+            $coverage = array();
 
-        if ($tagInfo == null) {
-            return false;
-        }
+            foreach ($tricorderTags as $tag) {
+                if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodReturns(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
+                    array_push($coverage, strtolower($matches[1]));
+                }
+            }
 
-        $tagType = $tagInfo['type'];
-        $coverage = array();
+            /**
+             * Sometimes people send us return types like bool|string, so we need to
+             * search for those and convert them to 'mixed'
+             */
+            if (stristr('|', $tagType) === true) {
+                $tagType = 'mixed';
+            }
 
-        foreach ($tricorderTags as $tag) {
-            if (isset($tag['@attributes']['description']) && preg_match('/^coversMethodReturns(.*?)Values\b/', $tag['@attributes']['description'], $matches)) {
-                array_push($coverage, strtolower($matches[1]));
+            // Make sure to not bother with this if we already ran into this
+            if (false === in_array($tagType, $coverage)) {
+                $formatter = new ReturnTypeFormatter($tagType, $methodName);
+                $formatter->outputMessage($this->output);
             }
         }
-
-        /**
-         * Sometimes people send us return types like bool|string, so we need to
-         * search for those and convert them to 'mixed'
-         */
-        if (stristr('|', $tagType) === true) {
-            $tagType = 'mixed';
-        }
-
-        // Make sure to not bother with this if we already ran into this
-        if (in_array($tagType, $coverage)) {
-            return false;
-        }
-
-        $formatter = new ReturnTypeFormatter($tagType, $methodName);
-        $formatter->outputMessage($this->output);
     }
 }
