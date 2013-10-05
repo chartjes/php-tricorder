@@ -32,19 +32,13 @@ class PhpDocParser
     private $basePath;
 
     /**
-     * @var ClassScanner
-     */
-    private $classScanner;
-
-    /**
      * @param string          $basePath
      * @param OutputInterface $output
      */
     public function __construct($basePath, OutputInterface $output)
     {
-        $this->output       = $output;
-        $this->basePath     = $basePath;
-        $this->classScanner = new ClassScanner($this->output);
+        $this->output   = $output;
+        $this->basePath = $basePath;
     }
 
     /**
@@ -142,7 +136,8 @@ class PhpDocParser
     private function scanClasses(SimpleXMLElement $classes)
     {
         foreach ($classes as $class) {
-            $this->classScanner->scan($class);
+            $classScanner = new ClassScanner($class, $this->output);
+            $classScanner->scan($class);
         }
     }
 }

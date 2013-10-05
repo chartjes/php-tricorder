@@ -21,7 +21,7 @@ use Tricorder\Tag\Extractor\MethodTagExtractor;
  *
  * @package Tricorder\Scanner
  */
-class MethodScanner
+class MethodScanner implements Scanner
 {
     /**
      * @var OutputInterface
@@ -29,56 +29,61 @@ class MethodScanner
     private $output;
 
     /**
-     * @var MethodTagExtractor
+     * @var array
      */
-    private $extractor;
+    private $tags;
 
     /**
+     * @var SimpleXMLElement
+     */
+    private $method;
+
+    /**
+     * @param SimpleXMLElement $method
      * @param OutputInterface $output
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(SimpleXMLElement $method, OutputInterface $output)
     {
-        $this->output    = $output;
-        $this->extractor = new MethodTagExtractor();
+        $this->output = $output;
+        $this->method = $method;
+
+        $extractor    = new MethodTagExtractor();
+        $this->tags   = $extractor->extractTags($method);
     }
 
     /**
      * Scan the $method for tags to process.
-     *
-     * @param SimpleXMLElement $method
      */
-    public function scan(SimpleXMLElement $method)
+    public function scan()
     {
-        $methodTags = $this->extractor->extractTags($method);
-
-        $tricorderTags = array_filter($methodTags, function($tag) {
+        $tricorderTags = array_filter($this->tags, function($tag) {
                 if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'tricorder') {
                     return true;
                 }
             });
 
         // Check to see if we have any parameters that we need to test
-        $paramTags = array_filter($methodTags, function($tag) {
+        $paramTags = array_filter($this->tags, function($tag) {
                 if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'param') {
                     return true;
                 }
             });
 
         // Grab our method return information
-        $returnTag = array_filter($methodTags, function($tag) {
+        $returnTag = array_filter($this->tags, function($tag) {
                 if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'return') {
                     return true;
                 }
             });
 
         $argumentProcessor = new ArgumentProcessor($this->output);
-        $argumentProcessor->process((string)$method->name, $paramTags, $tricorderTags);
+        $argumentProcessor->process((string)$this->method->name, $paramTags, $tricorderTags);
 
         // Process ReturnType
         $processor = new ReturnTypeProcessor($this->output);
-        $processor->process((string)$method->name, $returnTag, $tricorderTags);
+        $processor->process((string)$this->method->name, $returnTag, $tricorderTags);
 
-        $methodFormatter = new MethodFormatter($method);
+        $methodFormatter = new MethodFormatter($this->method);
         $methodFormatter->outputMessage($this->output);
     }
 }

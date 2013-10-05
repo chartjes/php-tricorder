@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Tricorder\Scanner
  */
-class ClassScanner
+class ClassScanner implements Scanner
 {
     /**
      * @var OutputInterface
@@ -25,25 +25,30 @@ class ClassScanner
     private $output;
 
     /**
-     * @param OutputInterface $output
+     * @var SimpleXMLElement
      */
-    public function __construct(OutputInterface $output)
+    private $class;
+
+    /**
+     * @param SimpleXMLElement $class
+     * @param OutputInterface  $output
+     */
+    public function __construct(SimpleXMLElement $class, OutputInterface $output)
     {
         $this->output = $output;
+        $this->class  = $class;
     }
 
     /**
      * Scan the $class to find out if we have any data that we need to check for type.
-     *
-     * @param SimpleXMLElement $class
      */
-    public function scan(SimpleXMLElement $class)
+    public function scan()
     {
-        $this->output->writeln("Scanning " . $class->{'name'});
-        $methodScanner = new MethodScanner($this->output);
+        $this->output->writeln("Scanning " . $this->class->{'name'});
 
-        $methods = $class->method;
+        $methods = $this->class->method;
         foreach ($methods as $method) {
+            $methodScanner = new MethodScanner($method, $this->output);
             $methodScanner->scan($method);
         }
     }
