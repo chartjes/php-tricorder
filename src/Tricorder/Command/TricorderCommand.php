@@ -12,6 +12,7 @@
 
 namespace Tricorder\Command;
 
+use SimpleXMLElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -159,9 +160,9 @@ HELP;
     /**
      * Scan our classes to look for methods
      *
-     * @param string $classXml
+     * @param SimpleXMLElement $classXml
      */
-    private function scanClasses($classXml)
+    private function scanClasses(SimpleXMLElement $classXml)
     {
         foreach ($classXml as $classInfo) {
             $this->outputMessage("Scanning " . $classInfo->{'name'});
@@ -175,14 +176,9 @@ HELP;
      *
      * @param SimpleXMLElement $methods
      */
-    private function scanMethods($methods)
+    private function scanMethods(SimpleXMLElement $methods)
     {
         foreach ($methods as $method) {
-            $methodHasSuggestions = $this->isVisible(
-                (string)$method->name,
-                (string)$method['visibility']
-            );
-
             // Convert our tag information into an array for easy manipulation
             $methodTags = array();
             foreach ($method->docblock->tag as $tag) {
@@ -221,28 +217,26 @@ HELP;
                 $tricorderTags
             );
 
-            if ($methodHasSuggestions || $argsHaveSuggestions || $returnTypeHasSuggestions) {
+            if ($this->isVisible($method) || $argsHaveSuggestions || $returnTypeHasSuggestions) {
                 $this->outputMessage('');
             }
         }
     }
 
     /**
-     * Determine if the method passed in is publicly visible
+     * Determine if the $method passed in is publicly visible.
      *
-     * @param string $methodName
-     * @param string $visibility
+     * @param SimpleXMLElement $method
      *
      * @return bool Whether the method is public
      */
-    private function isVisible($methodName, $visibility)
+    private function isVisible(SimpleXMLElement $method)
     {
         $methodIsVisible = false;
-
         // If a method is protected, flag it as hard-to-test
-        if ($visibility !== 'public') {
+        if ($method->visibility !== 'public') {
             $methodIsVisible = true;
-            $this->outputMessage("{$methodName} -- non-public methods are difficult to test in isolation");
+            $this->outputMessage("{$method->name} -- non-public methods are difficult to test in isolation");
         }
 
         return $methodIsVisible;
