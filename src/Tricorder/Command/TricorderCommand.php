@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tricorder\Exception\InvalidArgumentException;
+use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Formatter\ReturnTypeFormatter;
 use Tricorder\Formatter\VariableFormatter;
 
@@ -217,29 +218,9 @@ HELP;
                 $tricorderTags
             );
 
-            if ($this->isVisible($method) || $argsHaveSuggestions || $returnTypeHasSuggestions) {
-                $this->outputMessage('');
-            }
+            $methodFormatter = new MethodFormatter($method);
+            $methodFormatter->outputMessage($this->output);
         }
-    }
-
-    /**
-     * Determine if the $method passed in is publicly visible.
-     *
-     * @param SimpleXMLElement $method
-     *
-     * @return bool Whether the method is public
-     */
-    private function isVisible(SimpleXMLElement $method)
-    {
-        $methodIsVisible = false;
-        // If a method is protected, flag it as hard-to-test
-        if ($method->visibility !== 'public') {
-            $methodIsVisible = true;
-            $this->outputMessage("{$method->name} -- non-public methods are difficult to test in isolation");
-        }
-
-        return $methodIsVisible;
     }
 
     /**
