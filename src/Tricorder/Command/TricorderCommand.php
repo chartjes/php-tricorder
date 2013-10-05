@@ -22,6 +22,7 @@ use Tricorder\Exception\InvalidArgumentException;
 use Tricorder\Formatter\MethodFormatter;
 use Tricorder\Processor\ArgumentProcessor;
 use Tricorder\Processor\ReturnTypeProcessor;
+use Tricorder\Scanner\MethodScanner;
 use Tricorder\Tag\Extractor\MethodTagExtractor;
 
 /**
@@ -180,39 +181,9 @@ HELP;
      */
     private function scanMethods(SimpleXMLElement $methods)
     {
-        $tricorderTagExtractor = new MethodTagExtractor();
+        $methodScanner = new MethodScanner($this->output);
         foreach ($methods as $method) {
-            $methodTags = $tricorderTagExtractor->extractTags($method);
-
-            $tricorderTags = array_filter($methodTags, function($tag) {
-                    if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'tricorder') {
-                        return true;
-                    }
-                });
-
-            // Check to see if we have any parameters that we need to test
-            $paramTags = array_filter($methodTags, function($tag) {
-                    if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'param') {
-                        return true;
-                    }
-                });
-
-            // Grab our method return information
-            $returnTag = array_filter($methodTags, function($tag) {
-                    if (isset($tag['@attributes']['name']) && $tag['@attributes']['name'] == 'return') {
-                        return true;
-                    }
-                });
-
-            $argumentProcessor = new ArgumentProcessor($this->output);
-            $argumentProcessor->process((string)$method->name, $paramTags, $tricorderTags);
-
-            // Process ReturnType
-            $processor = new ReturnTypeProcessor($this->output);
-            $processor->process((string)$method->name, $returnTag, $tricorderTags);
-
-            $methodFormatter = new MethodFormatter($method);
-            $methodFormatter->outputMessage($this->output);
+            $methodScanner->scan($method);
         }
     }
 }
