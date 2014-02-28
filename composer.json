@@ -23,6 +23,7 @@
     },
     "require": {
         "phpdocumentor/phpdocumentor": "2.0.*",
-        "symfony/console": "2.*"
+        "symfony/console": "2.*",
+        "nikic/php-parser": "1.0.*@dev"
     }
 }
