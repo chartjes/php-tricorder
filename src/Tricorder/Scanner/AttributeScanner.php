@@ -22,12 +22,18 @@ class AttributeScanner implements Scanner
     private $source;
 
     /**
+     * @var array
+     */
+    private $messages;
+
+    /**
      * @param string $className
      * @param OutputInterface $output
      */
-    public function __construct($source)
+    public function __construct($filename)
     {
-        $this->source = $source;
+        $this->source = file_get_contents($filename);
+        $this->messages = array("Scanning {$filename} for non-public class attributes");
     }
 
     /**
@@ -44,28 +50,24 @@ class AttributeScanner implements Scanner
         $traverser->addVisitor($visitor);
         $traverser->traverse($ast);
         $attributes = $visitor->getNonPublicAttributes();
-        $messages = array();
 
         if (isset($attributes['protected'])) {
-            $messages = array_merge($this->processProtected($attributes['protected']), $messages);
+            $this->processProtected($attributes['protected']);
         }
 
         if (isset($attributes['private'])) {
-            $messages = array_merge($this->processPrivate($attributes['private']), $messages);
+            $this->processPrivate($attributes['private']);
         }
 
-        return $messages;
+        return $this->messages;
     }
 
     protected function processProtected($attributes)
     {
-        $messages = array();
-
         foreach ($attributes as $attribute) {
-            $messages[] = "\${$attribute} -- protected attributes can only be read, not altered or set";
+            $message = "\${$attribute} -- protected attributes can only be read, not altered or set";
+            array_push($this->messages, $message);
         }
-
-        return $messages;
     }
 
     protected function processPrivate($attributes)
@@ -73,9 +75,8 @@ class AttributeScanner implements Scanner
         $messages = array();
 
         foreach ($attributes as $attribute) {
-            $messages[] = "\${$attribute} -- private attributes can only be read, not altered or set";
+            $message = "\${$attribute} -- private attributes can only be read, not altered or set";
+            array_push($this->messages, $message);
         }
-
-        return $messages;
     }
 }

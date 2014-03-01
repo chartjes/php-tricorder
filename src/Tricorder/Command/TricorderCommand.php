@@ -32,17 +32,32 @@ class TricorderCommand extends Command
     {
         $help = <<<HELP
 PHP-Tricorder - by Chris Hartjes
-PHP-Tricorder analyzes phpDocumentor output to provide
-suggestions on test scenarios and point out potential problems
+Scans files and phpDocumentor output to provide suggestions on
+test scenarios and point out potential problems
+
+Sample Usage:
+
+tricorder --file=/path/to/single/file
+tricorder --phpdox=/path/to/structurefile
+tricorder --phpdox=/path/to/structurefile --path=/path/to/multiple/files
+tricorder --path=/path/to/multiple/files
+
 HELP;
 
         $this->setName('tricorder');
         $this->setDescription('PHP-Tricorder - by Chris Hartjes');
         $this->setHelp($help);
-        $this->addArgument(
+        $this->addOption(
             'file',
-            InputArgument::REQUIRED,
-            'The xml structure file'
+            null,
+            InputArgument::OPTIONAL,
+            'File containing class to scan'
+        );
+        $this->addOption(
+            'phpdox',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'The phpDocumenter XML output for the class you wish to test'
         );
         $this->addOption(
             'path',
@@ -55,9 +70,28 @@ HELP;
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $basePath      = $input->getOption('path');
-        $structureFile = $input->getArgument('file');
+        $structureFile = $input->getOption('phpdox');
+        $file          = $input->getOption('file');
+        $messages      = array();
 
-        $parser = new PhpDocParser($basePath, $output);
-        $parser->parse($structureFile);
+        if (!(($basePath && $structureFile) || ($file && (!$basePath || !$file)) && ($basePath || $structureFile || $file))) {
+            echo $this->getHelp();
+            return;
+        }
+
+        if (!empty($basePath)) {
+            $parser = new PhpDocParser($basePath, $output);
+            $parser->parse($structureFile);
+        }
+
+        if (!empty($file) && file_exists($file)) {
+            $attributeScanner = new \Tricorder\Scanner\AttributeScanner($file);
+            $attributeMessages = $attributeScanner->scan();
+            $messages = array_merge($attributeMessages, $messages);
+        }
+
+        foreach ($messages as $message) {
+            $output->writeln($message);
+        }
     }
 }

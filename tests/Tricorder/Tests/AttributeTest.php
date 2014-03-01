@@ -12,13 +12,11 @@
 
 namespace Tricorder\Tests;
 
-
 class AttritubeTest extends \PHPUnit_Framework_TestCase
 {
     public function testFindsProtectedAttributes()
     {
-        $source = file_get_contents(FIXTURE_DIR . 'ReferenceClass.php');
-        $attributeParser = new \Tricorder\Scanner\AttributeScanner($source);
+        $attributeParser = new \Tricorder\Scanner\AttributeScanner(FIXTURE_DIR . 'ReferenceClass.php');
         $response = $attributeParser->scan();
         $message = '$_db -- protected attributes can only be read, not altered or set';
 
@@ -27,8 +25,7 @@ class AttritubeTest extends \PHPUnit_Framework_TestCase
 
     public function testFindsPrivateAttributes()
     {
-        $source = file_get_contents(FIXTURE_DIR . 'ClassWithPrivateAttribute.php');
-        $attributeParser = new \Tricorder\Scanner\AttributeScanner($source);
+        $attributeParser = new \Tricorder\Scanner\AttributeScanner(FIXTURE_DIR . 'ClassWithPrivateAttribute.php');
         $response = $attributeParser->scan();
         $message = '$_foo -- private attributes can only be read, not altered or set';
 
@@ -37,10 +34,8 @@ class AttritubeTest extends \PHPUnit_Framework_TestCase
 
     public function testFindsBothPrivateAndProtectedAttributes()
     {
-        $source = file_get_contents(FIXTURE_DIR . 'ClassWithNonPublicAttributes.php');
-        $attributeParser = new \Tricorder\Scanner\AttributeScanner($source);
+        $attributeParser = new \Tricorder\Scanner\AttributeScanner(FIXTURE_DIR . 'ClassWithNonPublicAttributes.php');
         $response = $attributeParser->scan();
-        $this->assertTrue(count($response) == 2);
 
         $suffix = ' attributes can only be read, not altered or set';
         $privateMessage = '$privateAtt -- private' . $suffix;
@@ -49,5 +44,4 @@ class AttritubeTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($privateMessage, $response);
         $this->assertContains($protectedMessage, $response);
     }
-
 }

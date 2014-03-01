@@ -40,7 +40,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $argv = array(
             'command' => $command->getName(),
             '--path'  => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures',
-            'file'    => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
+            '--phpdox'    => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'structure.xml',
         );
 
         $commandTester = new CommandTester($command);
@@ -85,11 +85,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function checkForSpecificSuggestions($suggestion)
     {
         $this->assertContains($suggestion, $this->output);
-    } 
-
-    public function testShouldSuggestToTestTheProtectedAttributeForAnObjectType()
-    {
-        $this->markTestIncomplete('todo');
     }
 
     public function testShouldSuggestToTestReturnedValueFromMockObject()
@@ -101,4 +96,5 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestIncomplete('passArgumentToObject: Suggest to test argument passed to mock ->with($value)');
     }
+
 }
