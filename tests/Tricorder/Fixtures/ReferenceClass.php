@@ -16,7 +16,7 @@ class ReferenceClass
 {
     /**
      * Sample protected DB attribute
-     * @type \PDO 
+     * @type \PDO
      */
     protected $_db;
 
